@@ -1,58 +1,44 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import 'react-native-gesture-handler'
+import { Drawer } from 'expo-router/drawer';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { MaterialIcons } from '@expo/vector-icons';
+import CustomDrawerContent from '@/components/CustomDrawerContent';
 
-import { useColorScheme } from '@/components/useColorScheme';
-
-export {
-  // Catch any errors thrown by the Layout component.
-  ErrorBoundary,
-} from 'expo-router';
-
-export const unstable_settings = {
-  // Ensure that reloading on `/modal` keeps a back button present.
-  initialRouteName: '(tabs)',
-};
-
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
-export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    SpaceMono: require('../assets/fonts/SpaceMono-Regular.ttf'),
-    ...FontAwesome.font,
-  });
-
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
-  useEffect(() => {
-    if (error) throw error;
-  }, [error]);
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
-  return <RootLayoutNav />;
+const DrawerLayout = () => {
+    return <GestureHandlerRootView style={{flex:1}}>
+            <Drawer drawerContent={CustomDrawerContent}>
+                <Drawer.Screen 
+                    name="index" 
+                    options={{
+                        drawerLabel: 'Home',
+                        headerTitle: 'Home',
+                        drawerIcon:({size, color}) => (
+                            <MaterialIcons name='home' size={size} color={color}/>
+                        ),
+                    }}
+                />
+                <Drawer.Screen 
+                    name="news" 
+                    options={{
+                        drawerLabel: 'News',
+                        headerTitle: 'News',
+                        drawerIcon:({size, color}) => (
+                            <MaterialIcons name='newspaper' size={size} color={color}/>
+                        ),
+                    }}
+                />
+                <Drawer.Screen 
+                    name="profile" 
+                    options={{
+                        drawerLabel: 'Profile',
+                        headerTitle: 'Profile',
+                        drawerIcon:({size, color}) => (
+                            <MaterialIcons name='account-circle' size={size} color={color}/>
+                        ),
+                    }}
+                />
+            </Drawer>
+        </GestureHandlerRootView>
 }
 
-function RootLayoutNav() {
-  const colorScheme = useColorScheme();
-
-  return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        <Stack.Screen name="modal" options={{ presentation: 'modal' }} />
-      </Stack>
-    </ThemeProvider>
-  );
-}
+export default DrawerLayout;
