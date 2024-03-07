@@ -1,29 +1,50 @@
 import 'react-native-gesture-handler'
 import { Drawer } from 'expo-router/drawer';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 import CustomDrawerContent from '@/components/CustomDrawerContent';
 
 const DrawerLayout = () => {
     return <GestureHandlerRootView style={{flex:1}}>
-            <Drawer drawerContent={CustomDrawerContent}>
+            <Drawer drawerContent={CustomDrawerContent} screenOptions={{
+                drawerActiveBackgroundColor: '#30efbc',
+                drawerActiveTintColor: '#1D1B20',
+                drawerLabelStyle: { marginLeft: -20}
+            }}>
+                <Drawer.Screen 
+                    name="login" 
+                    options={{
+                        headerShown: false,
+                        drawerLabel: 'Login',
+                        headerTitle: 'Login',
+                        drawerItemStyle: {
+                            backgroundColor: '#2F29A1',
+                        },
+                        drawerLabelStyle:{
+                            color: '#',
+                        },
+                        drawerIcon:({size}) => (
+                            <MaterialCommunityIcons name='login' size={size} color={'#CAC4D0'}/>
+                        ),
+                    }}
+                />
                 <Drawer.Screen 
                     name="index" 
                     options={{
                         drawerLabel: 'Home',
                         headerTitle: 'Home',
                         drawerIcon:({size, color}) => (
-                            <MaterialIcons name='home' size={size} color={color}/>
+                            <MaterialCommunityIcons name='home-outline' size={size} color={color}/>
                         ),
                     }}
                 />
                 <Drawer.Screen 
-                    name="news" 
+                    name="tramits" 
                     options={{
-                        drawerLabel: 'News',
-                        headerTitle: 'News',
+                        drawerLabel: 'Tràmits',
+                        headerTitle: 'Tràmits',
                         drawerIcon:({size, color}) => (
-                            <MaterialIcons name='newspaper' size={size} color={color}/>
+                            <MaterialCommunityIcons name='file-outline' size={size} color={color}/>
                         ),
                     }}
                 />
