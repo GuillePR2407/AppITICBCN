@@ -4,9 +4,19 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import { MaterialIcons } from '@expo/vector-icons';
 import CustomDrawerContent from '@/components/CustomDrawerContent';
 
+
 const DrawerLayout = () => {
     return <GestureHandlerRootView style={{flex:1}}>
             <Drawer drawerContent={CustomDrawerContent}>
+                <Drawer.Screen
+                    name="login"
+                    options={{
+                        drawerLabel: 'Login',
+                        drawerIcon: ({ size, color }) => (
+                            <MaterialIcons name='login' size={size} color={color} />
+                        ),
+                    }}
+                />
                 <Drawer.Screen 
                     name="index" 
                     options={{
