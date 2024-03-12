@@ -19,69 +19,48 @@ const isWeb = Platform.OS === 'web';
 
 const DrawerItemsData = [
   {
-    label: 'Inbox',
-    icon: 'inbox',
+    label: 'Login',
+    key: -1,
+  },
+  {
+    label: 'Noticias',
+    icon: 'newspaper',
     key: 0,
-    right: () => <Text variant="labelLarge">44</Text>,
   },
   {
-    label: 'Starred',
-    icon: 'star',
+    label: 'Tramits',
+    icon: 'file-edit',
     key: 1,
-    right: ({ color }: { color: string }) => (
-      <Badge
-        visible
-        size={8}
-        style={[styles.badge, { backgroundColor: color }]}
-      />
-    ),
   },
-  { label: 'Sent mail', icon: 'send', key: 2 },
-  { label: 'Colored label', icon: 'palette', key: 3 },
-  {
-    label: 'A very long title that will be truncated',
-    icon: 'delete',
-    key: 4,
-    right: () => <Badge visible size={8} style={styles.badge} />,
+  { 
+    label: 'Informació', 
+    icon: 'send', 
+    key: 2 
   },
 ];
 
 const DrawerCollapsedItemsData = [
   {
-    label: 'Inbox',
-    focusedIcon: 'inbox',
-    unfocusedIcon: 'inbox-outline',
-    key: 0,
-    badge: 44,
+    label: 'login',
+    key: -1,
   },
   {
-    label: 'Starred',
-    focusedIcon: 'star',
-    unfocusedIcon: 'star-outline',
+    label: 'noticias',
+    focusedIcon: 'newspaper',
+    unfocusedIcon: 'newspaper-outline',
+    key: 0,
+  },
+  {
+    label: 'tramits',
+    focusedIcon: 'file-edit',
+    unfocusedIcon: 'file-edit-outline',
     key: 1,
   },
   {
-    label: 'Sent mail',
+    label: 'informació',
     focusedIcon: 'send',
     unfocusedIcon: 'send-outline',
     key: 2,
-  },
-  {
-    label: 'A very long title that will be truncated',
-    focusedIcon: 'delete',
-    unfocusedIcon: 'delete-outline',
-    key: 3,
-  },
-  {
-    label: 'Full width',
-    focusedIcon: 'arrow-all',
-    key: 4,
-  },
-  {
-    focusedIcon: 'bell',
-    unfocusedIcon: 'bell-outline',
-    key: 5,
-    badge: true,
   },
 ];
 
@@ -98,25 +77,11 @@ function DrawerItems() {
 
   const {
     toggleTheme,
-    toggleRtl: toggleRTL,
-    toggleThemeVersion,
     toggleCollapsed,
-    toggleCustomFont,
-    toggleRippleEffect,
-    customFontLoaded,
-    rippleEffectEnabled,
     collapsed,
-    rtl: isRTL,
     theme: { dark: isDarkTheme },
   } = preferences;
 
-  const _handleToggleRTL = () => {
-    toggleRTL();
-    I18nManager.forceRTL(!isRTL);
-    if (isWeb) {
-      Updates.reloadAsync();
-    }
-  };
 
   const coloredLabelTheme = {
     colors: isV3
@@ -156,7 +121,7 @@ function DrawerItems() {
       )}
       {!collapsed && (
         <>
-          <Drawer.Section title="Example items">
+          <Drawer.Section title="Recursos generals">
             {DrawerItemsData.map((props, index) => (
               <Drawer.Item
                 {...props}
@@ -168,7 +133,7 @@ function DrawerItems() {
             ))}
           </Drawer.Section>
 
-          <Drawer.Section title="Preferences">
+          <Drawer.Section>
             <TouchableRipple onPress={toggleTheme}>
               <View style={[styles.preference, isV3 && styles.v3Preference]}>
                 <Text variant="labelLarge">Dark Theme</Text>
@@ -177,65 +142,7 @@ function DrawerItems() {
                 </View>
               </View>
             </TouchableRipple>
-
-            {!isWeb && (
-              <TouchableRipple onPress={_handleToggleRTL}>
-                <View style={[styles.preference, isV3 && styles.v3Preference]}>
-                  <Text variant="labelLarge">RTL</Text>
-                  <View pointerEvents="none">
-                    <Switch value={isRTL} />
-                  </View>
-                </View>
-              </TouchableRipple>
-            )}
-
-            <TouchableRipple onPress={toggleThemeVersion}>
-              <View style={[styles.preference, isV3 && styles.v3Preference]}>
-                <Text variant="labelLarge">MD 2</Text>
-                <View pointerEvents="none">
-                  <Switch value={!isV3} />
-                </View>
-              </View>
-            </TouchableRipple>
-
-            {isV3 && (
-              <TouchableRipple onPress={toggleCollapsed}>
-                <View style={[styles.preference, isV3 && styles.v3Preference]}>
-                  <Text variant="labelLarge">Collapsed drawer *</Text>
-                  <View pointerEvents="none">
-                    <Switch value={collapsed} />
-                  </View>
-                </View>
-              </TouchableRipple>
-            )}
-
-            {isV3 && (
-              <TouchableRipple onPress={toggleCustomFont}>
-                <View style={[styles.preference, isV3 && styles.v3Preference]}>
-                  <Text variant="labelLarge">Custom font *</Text>
-                  <View pointerEvents="none">
-                    <Switch value={customFontLoaded} />
-                  </View>
-                </View>
-              </TouchableRipple>
-            )}
-
-            <TouchableRipple onPress={toggleRippleEffect}>
-              <View style={[styles.preference, isV3 && styles.v3Preference]}>
-                <Text variant="labelLarge">
-                  {isIOS ? 'Highlight' : 'Ripple'} effect *
-                </Text>
-                <View pointerEvents="none">
-                  <Switch value={rippleEffectEnabled} />
-                </View>
-              </View>
-            </TouchableRipple>
           </Drawer.Section>
-          {isV3 && !collapsed && (
-            <Text variant="bodySmall" style={styles.annotation}>
-              * - available only for MD3
-            </Text>
-          )}
         </>
       )}
     </DrawerContentScrollView>
