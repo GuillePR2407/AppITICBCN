@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { I18nManager, StyleSheet, View, Platform } from 'react-native';
-
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import * as Updates from 'expo-updates';
+import { useNavigation } from '@react-navigation/native';
 import {
   Badge,
   Drawer,
@@ -18,10 +18,6 @@ import { PreferencesContext, useExampleTheme } from './index';
 const isWeb = Platform.OS === 'web';
 
 const DrawerItemsData = [
-  {
-    label: 'Login',
-    key: -1,
-  },
   {
     label: 'Noticias',
     icon: 'newspaper',
@@ -40,10 +36,6 @@ const DrawerItemsData = [
 ];
 
 const DrawerCollapsedItemsData = [
-  {
-    label: 'login',
-    key: -1,
-  },
   {
     label: 'noticias',
     focusedIcon: 'newspaper',
@@ -65,6 +57,9 @@ const DrawerCollapsedItemsData = [
 ];
 
 function DrawerItems() {
+
+  const navigation = useNavigation();
+
   const [drawerItemIndex, setDrawerItemIndex] = React.useState<number>(0);
   const preferences = React.useContext(PreferencesContext);
 
@@ -104,6 +99,10 @@ function DrawerItems() {
         },
       ]}
     >
+      <Drawer.Item
+          label="Login"
+          onPress={() => navigation.navigate('login')}
+      />
       {isV3 && collapsed && (
         <Drawer.Section style={styles.collapsedSection}>
           {DrawerCollapsedItemsData.map((props, index) => (

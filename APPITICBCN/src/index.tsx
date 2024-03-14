@@ -65,12 +65,35 @@ export default function PaperExample() {
   const [rippleEffectEnabled, setRippleEffectEnabled] = React.useState(true);
 
   const theme = React.useMemo(() => {
-    if (themeVersion === 2) {
-      return isDarkMode ? MD2DarkTheme : MD2LightTheme;
+    const selectedTheme = isDarkMode ? MD3DarkTheme : MD3LightTheme;
+    if (isDarkMode) {
+      return {
+        ...selectedTheme,
+        colors: {
+          ...selectedTheme.colors,
+          accent: 'yellow',
+          primary: '#30EFBC',
+        },
+      };
+    }else{
+      return {
+        ...selectedTheme,
+        colors: {
+          ...selectedTheme.colors,
+          secondaryContainer: '#30EFBC',
+        },
+      };
     }
-
-    return isDarkMode ? MD3DarkTheme : MD3LightTheme;
+    return {
+      ...selectedTheme,
+      colors: {
+        ...selectedTheme.colors,
+        secondaryContainer: '#30EFBC',
+        accent: 'yellow',
+      },
+    };
   }, [isDarkMode, themeVersion]);
+  
 
   React.useEffect(() => {
     const restoreState = async () => {
