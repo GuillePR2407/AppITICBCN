@@ -1,8 +1,8 @@
 import * as React from 'react';
 import { I18nManager, StyleSheet, View, Platform } from 'react-native';
-
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import * as Updates from 'expo-updates';
+import { useNavigation } from '@react-navigation/native';
 import {
   Badge,
   Drawer,
@@ -14,16 +14,18 @@ import {
 } from 'react-native-paper';
 
 import { PreferencesContext, useExampleTheme } from './index';
+import { Background } from '@react-navigation/elements';
 
 const isWeb = Platform.OS === 'web';
 
 const DrawerItemsData = [
   {
     label: 'Login',
+    icon: 'login',
     key: -1,
   },
   {
-    label: 'Noticias',
+    label: 'Notícies',
     icon: 'newspaper',
     key: 0,
   },
@@ -42,6 +44,8 @@ const DrawerItemsData = [
 const DrawerCollapsedItemsData = [
   {
     label: 'login',
+    focusedIcon: 'login',
+    unfocusedIcon: 'login-outline',
     key: -1,
   },
   {
@@ -65,13 +69,15 @@ const DrawerCollapsedItemsData = [
 ];
 
 function DrawerItems() {
+
+  const navigation = useNavigation();
+
   const [drawerItemIndex, setDrawerItemIndex] = React.useState<number>(0);
   const preferences = React.useContext(PreferencesContext);
 
   const _setDrawerItem = (index: number) => setDrawerItemIndex(index);
 
   const { isV3, colors } = useExampleTheme();
-  const isIOS = Platform.OS === 'ios';
 
   if (!preferences) throw new Error('PreferencesContext not provided');
 
@@ -81,7 +87,6 @@ function DrawerItems() {
     collapsed,
     theme: { dark: isDarkTheme },
   } = preferences;
-
 
   const coloredLabelTheme = {
     colors: isV3
@@ -104,25 +109,23 @@ function DrawerItems() {
         },
       ]}
     >
-      {isV3 && collapsed && (
-        <Drawer.Section style={styles.collapsedSection}>
-          {DrawerCollapsedItemsData.map((props, index) => (
-            <Drawer.CollapsedItem
-              {...props}
-              key={props.key}
-              active={drawerItemIndex === index}
-              onPress={() => {
-                _setDrawerItem(index);
-                index === 4 && toggleCollapsed();
-              }}
-            />
-          ))}
-        </Drawer.Section>
-      )}
+      <Drawer.Section style={{ paddingTop: 10 }}>
+          <Drawer.Item
+            label="Login"
+            icon="login"
+            active={drawerItemIndex === -1} 
+            onPress={() => _setDrawerItem(-1)}
+            style={{ backgroundColor: '#2F29A1' }}
+            theme={{colors: { 
+            onSecondaryContainer: '#CAC4D0',
+            onSurfaceVariant: '#CAC4D0', }}}
+          />
+      </Drawer.Section>
+
       {!collapsed && (
         <>
-          <Drawer.Section title="Recursos generals">
-            {DrawerItemsData.map((props, index) => (
+          <Drawer.Section title="Recursos Generals">
+            {DrawerItemsData.filter(item => item.key !== -1).map((props, index) => (
               <Drawer.Item
                 {...props}
                 key={props.key}
@@ -132,22 +135,13 @@ function DrawerItems() {
               />
             ))}
           </Drawer.Section>
-
-          <Drawer.Section>
-            <TouchableRipple onPress={toggleTheme}>
-              <View style={[styles.preference, isV3 && styles.v3Preference]}>
-                <Text variant="labelLarge">Dark Theme</Text>
-                <View pointerEvents="none">
-                  <Switch value={isDarkTheme} />
-                </View>
-              </View>
-            </TouchableRipple>
-          </Drawer.Section>
+          {/* Resto del contenido como el Switch para el tema oscuro */}
         </>
       )}
     </DrawerContentScrollView>
   );
 }
+
 
 const styles = StyleSheet.create({
   drawerContent: {
