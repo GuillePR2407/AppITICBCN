@@ -1,7 +1,6 @@
 import * as React from 'react';
 import { I18nManager, StyleSheet, View, Platform } from 'react-native';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
-import * as Updates from 'expo-updates';
 import { useNavigation } from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import { RootStackParamList } from './RootStackParamList';
@@ -16,9 +15,6 @@ import {
 } from 'react-native-paper';
 
 import { PreferencesContext, useExampleTheme } from './index';
-import { Background } from '@react-navigation/elements';
-import Login from './login';
-
 const isWeb = Platform.OS === 'web';
 
 const DrawerItemsData = [
@@ -41,33 +37,6 @@ const DrawerItemsData = [
     label: 'Informació', 
     icon: 'send', 
     key: 2 
-  },
-];
-
-const DrawerCollapsedItemsData = [
-  {
-    label: 'login',
-    focusedIcon: 'login',
-    unfocusedIcon: 'login-outline',
-    key: -1,
-  },
-  {
-    label: 'noticias',
-    focusedIcon: 'newspaper',
-    unfocusedIcon: 'newspaper-outline',
-    key: 0,
-  },
-  {
-    label: 'tramits',
-    focusedIcon: 'file-edit',
-    unfocusedIcon: 'file-edit-outline',
-    key: 1,
-  },
-  {
-    label: 'informació',
-    focusedIcon: 'send',
-    unfocusedIcon: 'send-outline',
-    key: 2,
   },
 ];
 
@@ -119,7 +88,7 @@ function DrawerItems() {
             active={drawerItemIndex === -1} 
             onPress={() => {
               _setDrawerItem(-1)
-              navigation.navigate('Login')}}
+              navigation.navigate('Login')}}  
             style={{ backgroundColor: '#2F29A1' }}
             theme={{colors: { 
             onSecondaryContainer: '#CAC4D0',

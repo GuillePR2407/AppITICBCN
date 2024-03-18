@@ -48,6 +48,7 @@ export default function Root() {
         },
       })}
     >
+      {/* Cambiado de ExampleList a NewsSection */}
       <Stack.Screen
         name="NewsSection"
         component={NewsSection}
