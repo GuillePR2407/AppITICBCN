@@ -3,6 +3,8 @@ import { I18nManager, StyleSheet, View, Platform } from 'react-native';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import * as Updates from 'expo-updates';
 import { useNavigation } from '@react-navigation/native';
+import {NativeStackNavigationProp} from '@react-navigation/native-stack';
+import { RootStackParamList } from './RootStackParamList';
 import {
   Badge,
   Drawer,
@@ -15,6 +17,7 @@ import {
 
 import { PreferencesContext, useExampleTheme } from './index';
 import { Background } from '@react-navigation/elements';
+import Login from './login';
 
 const isWeb = Platform.OS === 'web';
 
@@ -70,7 +73,7 @@ const DrawerCollapsedItemsData = [
 
 function DrawerItems() {
 
-  const navigation = useNavigation();
+  const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 
   const [drawerItemIndex, setDrawerItemIndex] = React.useState<number>(0);
   const preferences = React.useContext(PreferencesContext);
@@ -114,7 +117,9 @@ function DrawerItems() {
             label="Login"
             icon="login"
             active={drawerItemIndex === -1} 
-            onPress={() => _setDrawerItem(-1)}
+            onPress={() => {
+              _setDrawerItem(-1)
+              navigation.navigate('Login')}}
             style={{ backgroundColor: '#2F29A1' }}
             theme={{colors: { 
             onSecondaryContainer: '#CAC4D0',
@@ -135,7 +140,16 @@ function DrawerItems() {
               />
             ))}
           </Drawer.Section>
-          {/* Resto del contenido como el Switch para el tema oscuro */}
+          <Drawer.Section>
+              <TouchableRipple onPress={toggleTheme}>
+                <View style={[styles.preference, isV3 && styles.v3Preference]}>
+                  <Text variant="labelLarge">Dark Theme</Text>
+                  <View pointerEvents="none">
+                    <Switch value={isDarkTheme} />
+                  </View>
+                </View>
+              </TouchableRipple>
+            </Drawer.Section>
         </>
       )}
     </DrawerContentScrollView>

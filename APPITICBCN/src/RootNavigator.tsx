@@ -9,7 +9,8 @@ import {
 } from '@react-navigation/stack';
 import { Appbar } from 'react-native-paper';
 
-import ExampleList, { examples } from './ExampleList';
+import NewsSection from './NewsSection';
+import Login from './login';
 
 const Stack = createStackNavigator();
 
@@ -18,56 +19,49 @@ export default function Root() {
     Platform.OS === 'android'
       ? CardStyleInterpolators.forFadeFromBottomAndroid
       : CardStyleInterpolators.forHorizontalIOS;
+
   return (
     <Stack.Navigator
-      screenOptions={({ navigation }) => {
-        return {
-          detachPreviousScreen: !navigation.isFocused(),
-          cardStyleInterpolator,
-          header: ({ navigation, route, options, back }) => {
-            const title = getHeaderTitle(options, route.name);
-            return (
-              <Appbar.Header elevated>
-                {back ? (
-                  <Appbar.BackAction onPress={() => navigation.goBack()} />
-                ) : (navigation as any).openDrawer ? (
-                  <Appbar.Action
-                    icon="menu"
-                    isLeading
-                    onPress={() =>
-                      (
-                        navigation as any as DrawerNavigationProp<{}>
-                      ).openDrawer()
-                    }
-                  />
-                ) : null}
-                <Appbar.Content title={title} />
-              </Appbar.Header>
-            );
-          },
-        };
-      }}
+      screenOptions={({ navigation }) => ({
+        detachPreviousScreen: !navigation.isFocused(),
+        cardStyleInterpolator,
+        header: ({ navigation, route, options, back }) => {
+          const title = getHeaderTitle(options, route.name);
+          return (
+            <Appbar.Header elevated>
+              {back ? (
+                <Appbar.BackAction onPress={() => navigation.goBack()} />
+              ) : (navigation as any).openDrawer ? (
+                <Appbar.Action
+                  icon="menu"
+                  isLeading
+                  onPress={() =>
+                    (
+                      navigation as any as DrawerNavigationProp<{}>
+                    ).openDrawer()
+                  }
+                />
+              ) : null}
+              <Appbar.Content title={title} />
+            </Appbar.Header>
+          );
+        },
+      })}
     >
       <Stack.Screen
-        name="ExampleList"
-        component={ExampleList}
+        name="NewsSection"
+        component={NewsSection}
         options={{
-          title: 'Examples',
+          title: 'Noticias',
         }}
       />
-      {(Object.keys(examples) as Array<keyof typeof examples>).map((id) => {
-        return (
-          <Stack.Screen
-            key={id}
-            name={id}
-            component={examples[id]}
-            options={{
-              title: examples[id].title,
-              headerShown: id !== 'themingWithReactNavigation',
-            }}
-          />
-        );
-      })}
+      <Stack.Screen
+        name="Login"
+        component={Login}
+        options={{
+          title: 'Login',
+      }}
+/>
     </Stack.Navigator>
   );
 }
