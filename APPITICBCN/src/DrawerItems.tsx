@@ -13,6 +13,11 @@ import {
 } from 'react-native-paper';
 
 import { PreferencesContext, useExampleTheme } from './index';
+<<<<<<< HEAD
+=======
+import { Background } from '@react-navigation/elements';
+
+>>>>>>> 6795bf81b57e47b9e3a6536e2456d8c1ff5f57ba
 const isWeb = Platform.OS === 'web';
 
 const DrawerItemsData = [
@@ -38,6 +43,36 @@ const DrawerItemsData = [
   },
 ];
 
+<<<<<<< HEAD
+=======
+const DrawerCollapsedItemsData = [
+  {
+    label: 'login',
+    focusedIcon: 'login',
+    unfocusedIcon: 'login-outline',
+    key: -1,
+  },
+  {
+    label: 'noticias',
+    focusedIcon: 'newspaper',
+    unfocusedIcon: 'newspaper-outline',
+    key: 0,
+  },
+  {
+    label: 'tramits',
+    focusedIcon: 'file-edit',
+    unfocusedIcon: 'file-edit-outline',
+    key: 1,
+  },
+  {
+    label: 'informació',
+    focusedIcon: 'send',
+    unfocusedIcon: 'send-outline',
+    key: 2,
+  },
+];
+
+>>>>>>> 6795bf81b57e47b9e3a6536e2456d8c1ff5f57ba
 function DrawerItems() {
 
   const navigation = useNavigation();
@@ -84,8 +119,12 @@ function DrawerItems() {
             label="Login"
             icon="login"
             active={drawerItemIndex === -1} 
+<<<<<<< HEAD
             onPress={() => navigation.navigate('login')}
             
+=======
+            onPress={() => _setDrawerItem(-1)}
+>>>>>>> 6795bf81b57e47b9e3a6536e2456d8c1ff5f57ba
             style={{ backgroundColor: '#2F29A1' }}
             theme={{colors: { 
             onSecondaryContainer: '#CAC4D0',
@@ -106,6 +145,7 @@ function DrawerItems() {
               />
             ))}
           </Drawer.Section>
+<<<<<<< HEAD
           <Drawer.Section>
               <TouchableRipple onPress={toggleTheme}>
                 <View style={[styles.preference, isV3 && styles.v3Preference]}>
@@ -117,6 +157,10 @@ function DrawerItems() {
               </TouchableRipple>
             </Drawer.Section>
           </>
+=======
+          {/* Resto del contenido como el Switch para el tema oscuro */}
+        </>
+>>>>>>> 6795bf81b57e47b9e3a6536e2456d8c1ff5f57ba
       )}
     </DrawerContentScrollView>
   );
