@@ -10,7 +10,8 @@ import {
 import { Appbar } from 'react-native-paper';
 
 import NewsSection from './NewsSection';
-import Login from './login';
+import Login from './Login';
+import Noticia from './Noticia';
 
 const Stack = createStackNavigator();
 
@@ -61,8 +62,14 @@ export default function Root() {
         component={Login}
         options={{
           title: 'Login',
-      }}
-/>
+      }}/>
+      <Stack.Screen
+        name="Noticia"
+        component={Noticia}
+        options={{
+          title: 'Noticia',
+        }}
+      />
     </Stack.Navigator>
   );
 }
