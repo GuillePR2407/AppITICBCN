@@ -1,45 +1,81 @@
 import React, { useState } from 'react';
 import { View } from 'react-native';
-import { TextInput, Button } from 'react-native-paper';
-
-// Utilizando hooks para el tema, asumiendo que es exportado desde './index'.
-// Este es solo un ejemplo; ajusta el uso del tema según sea necesario.
+import { TextInput, Button, Text, Checkbox } from 'react-native-paper';
+import Logo from './components/Logo';
 import { useExampleTheme } from './index';
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from './RootStackParamList';
+import Register from './Register';
 
 const Login = () => {
-const theme = useExampleTheme();
-// Asumiendo que isV3 es una propiedad del tema para determinar estilos
-const height = theme.isV3 ? 80 : 56;
+    const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
+    const theme = useExampleTheme();
+    const height = theme.isV3 ? 80 : 56;
+    const [checked, setChecked] = React.useState(false);
+    
+    const [userName, setUserName] = useState('');
+    const [password, setPassword] = useState('');
 
-const [userName, setUserName] = useState('');
-const [password, setPassword] = useState('');
+    const handleLogin = () => {
+        console.log('Username:', userName);
+        console.log('Password:', password);
+    };
 
-const handleLogin = () => {
-    // Implementa aquí la lógica de inicio de sesión
-    console.log('Username:', userName);
-    console.log('Password:', password);
-};
+    const navigateToRegister = () => {
+        navigation.navigate('Register');
+    };
 
-return (
-    <View style={{ flex: 1, justifyContent: 'center' }}>
-    <View style={{ width: '80%', alignSelf: 'center' }}>
-        <TextInput
-        label="Email"
-        value={userName}
-        onChangeText={setUserName} // Actualiza directamente el estado con el valor del input
-        />
-        <TextInput
-        label="Password"
-        value={password}
-        secureTextEntry
-        onChangeText={setPassword} // Igual que arriba, actualiza directamente el estado
-        />
-        <Button mode="contained" onPress={handleLogin} style={{ marginTop: 20, height }}>
-        Login
-        </Button>
-    </View>
-    </View>
-);
+    return (
+        <View style={{ flex: 1, justifyContent: 'center' }}>
+            <View style={{ width: '80%', alignSelf: 'center' }}>
+                <Logo />
+                <TextInput
+                    theme={{ colors: { primary: "#3A31F4" }}}  
+                    style={{ marginTop: 20, marginBottom: 20 }}
+                    label="Email"
+                    value={userName}
+                    onChangeText={setUserName}
+                    mode="outlined"
+                />
+                <TextInput  
+                    theme={{ colors: { primary: "#3A31F4" }}} 
+                    style={{ marginTop: 20 }} 
+                    label="Password"
+                    value={password}
+                    secureTextEntry
+                    onChangeText={setPassword}
+                    mode="outlined"
+                />
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                    <Text onPress={() => { setChecked(!checked); }}>Remember me</Text>
+                    <Checkbox
+                        status={checked ? 'checked' : 'unchecked'}
+                        onPress={() => {
+                            setChecked(!checked);
+                        }}
+                    />
+                </View>
+                <Button 
+                    mode="contained" 
+                    onPress={handleLogin} 
+                    style={{
+                        marginTop: 20,
+                        marginBottom: 20,
+                        height: '10%',
+                        justifyContent: 'center',
+                        width: '60%',
+                        alignSelf: 'center'
+                    }}
+                    textColor="#000000">
+                    Login
+                </Button>
+                <Text style={{ marginBottom: 20, marginTop: 5, alignSelf: 'center'}} onPress={navigateToRegister}>
+                    Registrate!
+                </Text>
+            </View>
+        </View>
+    );
 };
 
 export default Login;

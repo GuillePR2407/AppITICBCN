@@ -10,7 +10,9 @@ import {
 import { Appbar } from 'react-native-paper';
 
 import NewsSection from './NewsSection';
-import Login from './login';
+import Login from './Login';
+import Register from './Register';
+
 
 const Stack = createStackNavigator();
 
@@ -62,7 +64,14 @@ export default function Root() {
         options={{
           title: 'Login',
       }}
-/>
+      />
+        <Stack.Screen
+        name="Register"
+        component={Register}
+        options={{
+          title: 'Register',
+      }}
+      />
     </Stack.Navigator>
   );
 }
