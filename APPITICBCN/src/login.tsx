@@ -50,6 +50,7 @@ const Login = () => {
                 <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text onPress={() => { setChecked(!checked); }}>Remember me</Text>
                     <Checkbox
+                        theme={{ colors: { primary: "#3A31F4" }}}  
                         status={checked ? 'checked' : 'unchecked'}
                         onPress={() => {
                             setChecked(!checked);

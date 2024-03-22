@@ -11,12 +11,8 @@ import { Appbar } from 'react-native-paper';
 
 import NewsSection from './NewsSection';
 import Login from './Login';
-<<<<<<< HEAD
 import Register from './Register';
 
-=======
-import Noticia from './Noticia';
->>>>>>> 56357b265182f8681e6deff5d185fbe3f266190b
 
 const Stack = createStackNavigator();
 
