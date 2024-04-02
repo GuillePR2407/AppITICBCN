@@ -84,6 +84,7 @@ export default function PaperExample() {
         },
       };
     }
+    
   }, [isDarkMode, themeVersion]);
   
 

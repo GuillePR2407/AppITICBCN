@@ -12,7 +12,10 @@ import { Appbar } from 'react-native-paper';
 import NewsSection from './NewsSection';
 import Login from './Login';
 import Register from './Register';
-
+import Noticia from './Noticia';
+import Tramits from './Tramits';
+import InfoSection from './InfoSection';
+import Logo from './components/LogoPetit';
 
 const Stack = createStackNavigator();
 
@@ -30,7 +33,7 @@ export default function Root() {
         header: ({ navigation, route, options, back }) => {
           const title = getHeaderTitle(options, route.name);
           return (
-            <Appbar.Header elevated>
+            <Appbar.Header elevated mode='center-aligned'>
               {back ? (
                 <Appbar.BackAction onPress={() => navigation.goBack()} />
               ) : (navigation as any).openDrawer ? (
@@ -45,6 +48,12 @@ export default function Root() {
                 />
               ) : null}
               <Appbar.Content title={title} />
+
+              <Appbar.Content 
+                title={
+                  <Logo />
+                }style={{marginRight: 0}}
+              />
             </Appbar.Header>
           );
         },
@@ -71,6 +80,20 @@ export default function Root() {
         options={{
           title: 'Register',
       }}
+      />
+      <Stack.Screen
+        name="Tràmits"
+        component={Tramits}
+        options={{
+          title: 'Tràmits',
+        }}
+      />
+      <Stack.Screen
+        name="InfoSection"
+        component={InfoSection}
+        options={{
+          title: 'Informació',
+        }}
       />
     </Stack.Navigator>
   );
