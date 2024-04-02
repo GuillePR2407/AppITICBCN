@@ -17,26 +17,31 @@ import {
 import { PreferencesContext, useExampleTheme } from './index';
 const isWeb = Platform.OS === 'web';
 
+
 const DrawerItemsData = [
   {
     label: 'Login',
     icon: 'login',
     key: -1,
+    routeName: 'Login'
   },
   {
     label: 'Notícies',
     icon: 'newspaper',
     key: 0,
+    routeName: 'NewsSection'
   },
   {
     label: 'Tramits',
     icon: 'file-edit',
     key: 1,
+    routeName: 'Tramits'
   },
   { 
     label: 'Informació', 
-    icon: 'send', 
-    key: 2 
+    icon: 'information-outline', 
+    key: 2,
+    routeName: 'InfoSection'
   },
 ];
 
@@ -105,7 +110,11 @@ function DrawerItems() {
                 key={props.key}
                 theme={props.key === 3 ? coloredLabelTheme : undefined}
                 active={drawerItemIndex === index}
-                onPress={() => _setDrawerItem(index)}
+                onPress={() => {
+                  _setDrawerItem(index)
+                  const { routeName } = props;
+                  navigation.navigate(routeName as keyof RootStackParamList)
+                }}
               />
             ))}
           </Drawer.Section>

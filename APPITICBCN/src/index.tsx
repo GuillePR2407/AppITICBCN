@@ -84,14 +84,7 @@ export default function PaperExample() {
         },
       };
     }
-    return {
-      ...selectedTheme,
-      colors: {
-        ...selectedTheme.colors,
-        secondaryContainer: '#30EFBC',
-        accent: 'yellow',
-      },
-    };
+    
   }, [isDarkMode, themeVersion]);
   
 
