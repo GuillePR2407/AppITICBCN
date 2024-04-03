@@ -40,7 +40,7 @@ const newsData = [
 
 
 const NewsSection = () => {
-  type NewsNavigationProp = StackNavigationProp<RootStackParamList, 'Noticia'>
+  type NewsNavigationProp = StackNavigationProp<RootStackParamList, 'NoticiaItem'>
 
   const navigation = useNavigation<NewsNavigationProp>();
   
@@ -51,7 +51,7 @@ const NewsSection = () => {
           key={newsItem.id}
           onPress={() => {
             if (newsItem.contentUrl) {
-              navigation.navigate('Noticia', { url: newsItem.contentUrl });
+              navigation.navigate('NoticiaItem', { url: newsItem.contentUrl });
             }
           }}
           rippleColor="rgba(0, 0, 0, .32)"

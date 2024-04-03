@@ -1,9 +1,14 @@
 export type RootStackParamList = {
     NewsSection: undefined;
     Login: undefined;
-    Noticia: {
+    NoticiaItem: {
         url: string;
     };
     Tramits: undefined;
     InfoSection: undefined;
+    InfoItem: {
+        titulo: string;
+        subtitulo: string;
+        texto: string;
+    }
 };

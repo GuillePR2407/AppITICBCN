@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { WebView } from 'react-native-webview';
 
-const Noticia = ({ route }) => { 
+const NoticiaItem = ({ route }) => { 
     const { url } = route.params;
 
     const [contentVisible, setContentVisible] = useState(false);
@@ -27,4 +27,4 @@ const Noticia = ({ route }) => {
     );
 }
 
-export default Noticia;
+export default NoticiaItem;

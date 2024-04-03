@@ -11,9 +11,10 @@ import { Appbar } from 'react-native-paper';
 
 import NewsSection from './NewsSection';
 import Login from './Login';
-import Noticia from './Noticia';
+import NoticiaItem from './NoticiaItem';
 import Tramits from './Tramits';
 import InfoSection from './InfoSection';
+import InfoItem from './InfoItem';
 
 const Stack = createStackNavigator();
 
@@ -31,11 +32,12 @@ export default function Root() {
         header: ({ navigation, route, options, back }) => {
           const title = getHeaderTitle(options, route.name);
           // Comprueba si la pantalla actual es 'Login'
-          const isLoginScreen = route.name === 'Login';
+          const excludedScreens = ['Login', 'NoticiaItem', 'InfoItem'];
+          const isExcludedScreen = excludedScreens.includes(route.name);
 
           return (
             <Appbar.Header elevated>
-              {!isLoginScreen && (navigation as any).openDrawer ? (
+              {!isExcludedScreen && (navigation as any).openDrawer ? (
                 // Muestra el botón del menú para todas las pantallas excepto Login
                 <Appbar.Action
                   icon="menu"
@@ -71,8 +73,8 @@ export default function Root() {
           title: 'Login',
       }}/>
       <Stack.Screen
-        name="Noticia"
-        component={Noticia}
+        name="NoticiaItem"
+        component={NoticiaItem}
         options={{
           title: 'Noticia',
         }}
@@ -87,6 +89,13 @@ export default function Root() {
       <Stack.Screen
         name="InfoSection"
         component={InfoSection}
+        options={{
+          title: 'Informació',
+        }}
+      />
+      <Stack.Screen
+        name="InfoItem"
+        component={InfoItem}
         options={{
           title: 'Informació',
         }}
