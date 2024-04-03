@@ -7,9 +7,8 @@ const InfoSection = () => {
     return (
         <ScrollView>
             <List.Item
-                title="First Item"
-                description="Item description"
-                left={props => <List.Icon {...props} icon="folder" />}
+                title={"First Item"}
+                style={{ backgroundColor: '#30efbc' }}
             />
         </ScrollView>)
 }
