@@ -1,0 +1,44 @@
+[
+    {
+        "id": 1,
+        "title": "Sobre l'institut",
+        "subtitle": "Informació sobre l'institut",
+        "text": "Texto de ejemplo para la información. Aquí puedes añadir más detalles.",
+        "icon": "information-outline"
+    },
+    {
+        "id": 2,
+        "title": "Projecte educatiu",
+        "subtitle": "Subtítulo de ejemplo",
+        "text": "Texto de ejemplo para la información. Aquí puedes añadir más detalles.",
+        "icon": "information-outline"
+    },
+    {
+        "id": 3,
+        "title": "Estudis",
+        "subtitle": "Subtítulo de ejemplo",
+        "text": "Texto de ejemplo para la información. Aquí puedes añadir más detalles",
+        "icon": "information-outline"
+    },
+    {
+        "id": 4,
+        "title": "Serveis",
+        "subtitle": "Subtítulo de ejemplo",
+        "text": "Texto de ejemplo para la información. Aquí puedes añadir más detalles",
+        "icon": "information-outline"
+    },
+    {
+        "id": 5,
+        "title": "Erasmus+",
+        "subtitle": "Subtítulo de ejemplo",
+        "text": "Texto de ejemplo para la información. Aquí puedes añadir más detalles",
+        "icon": "information-outline"
+    },
+    {
+        "id": 6,
+        "title": "Secretaría",
+        "subtitle": "Subtítulo de ejemplo",
+        "text": "Texto de ejemplo para la información. Aquí puedes añadir más detalles",
+        "icon": "information-outline"
+    }
+]

@@ -24,7 +24,7 @@ import {
 } from 'react-native-paper';
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 
-import DrawerItems from './DrawerItems';
+import DrawerItems from './items/DrawerItems';
 import App from './RootNavigator';
 
 const PERSISTENCE_KEY = 'NAVIGATION_STATE';

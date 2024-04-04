@@ -11,10 +11,10 @@ import { Appbar } from 'react-native-paper';
 
 import NewsSection from './NewsSection';
 import Login from './Login';
-import NoticiaItem from './NoticiaItem';
+import NoticiaItem from './items/NoticiaItem';
 import Tramits from './Tramits';
 import InfoSection from './InfoSection';
-import InfoItem from './InfoItem';
+import InfoItem from './items/InfoItem';
 
 const Stack = createStackNavigator();
 

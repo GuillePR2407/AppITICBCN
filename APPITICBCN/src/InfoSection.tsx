@@ -6,29 +6,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from './RootStackParamList';
 
-const itemsData = [
-    {
-        id: 1,
-        title: "Primera info",
-        subtitle: "Subtítulo de la primera info",
-        text: "Texto de ejemplo para la primera información. Aquí puedes añadir más detalles.",
-        icon: "information-outline",
-    },
-    {
-        id: 2,
-        title: "Segunda info",
-        subtitle: "Subtítulo de la segunda info",
-        text: "Texto de ejemplo para la segunda información. Aquí puedes añadir más detalles.",
-        icon: "information-outline",
-    },
-    {
-        id: 3,
-        title: "Tercera info",
-        subtitle: "Subtítulo de la tercera info",
-        text: "Texto de ejemplo para la tercera información. Aquí puedes añadir más detalles.",
-        icon: "information-outline",
-    },
-];
+import itemsData from './data/itemsData.json';
 
 const InfoSection = () => {
     const theme = useTheme();

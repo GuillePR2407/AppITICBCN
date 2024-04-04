@@ -3,7 +3,7 @@ import { I18nManager, StyleSheet, View, Platform } from 'react-native';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
-import { RootStackParamList } from './RootStackParamList';
+import { RootStackParamList } from '../RootStackParamList';
 import {
   Badge,
   Drawer,
@@ -14,7 +14,7 @@ import {
   TouchableRipple,
 } from 'react-native-paper';
 
-import { PreferencesContext, useExampleTheme } from './index';
+import { PreferencesContext, useExampleTheme } from '../index';
 const isWeb = Platform.OS === 'web';
 
 
