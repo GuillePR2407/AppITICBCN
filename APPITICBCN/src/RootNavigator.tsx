@@ -13,7 +13,7 @@ import NewsSection from './NewsSection';
 import Login from './Login';
 import Register from './Register';
 import Noticia from './Noticia';
-import Tramits from './Tramits';
+import TramitsSection from './TramitsSection';
 import InfoSection from './InfoSection';
 import Logo from './components/LogoPetit';
 
@@ -27,16 +27,18 @@ export default function Root() {
 
   return (
     <Stack.Navigator
-      screenOptions={({ navigation }) => ({
+      screenOptions={({ navigation, route }) => ({
         detachPreviousScreen: !navigation.isFocused(),
         cardStyleInterpolator,
         header: ({ navigation, route, options, back }) => {
           const title = getHeaderTitle(options, route.name);
+          // Comprueba si la pantalla actual es 'Login'
+          const isLoginScreen = route.name === 'Login';
+
           return (
-            <Appbar.Header elevated mode='center-aligned'>
-              {back ? (
-                <Appbar.BackAction onPress={() => navigation.goBack()} />
-              ) : (navigation as any).openDrawer ? (
+            <Appbar.Header elevated>
+              {!isLoginScreen && (navigation as any).openDrawer ? (
+                // Muestra el botón del menú para todas las pantallas excepto Login
                 <Appbar.Action
                   icon="menu"
                   isLeading
@@ -46,6 +48,9 @@ export default function Root() {
                     ).openDrawer()
                   }
                 />
+              ) : back ? (
+                // Muestra el botón de volver solo en la pantalla de Login
+                <Appbar.BackAction onPress={() => navigation.goBack()} />
               ) : null}
               <Appbar.Content title={title} />
 
@@ -82,8 +87,8 @@ export default function Root() {
       }}
       />
       <Stack.Screen
-        name="Tràmits"
-        component={Tramits}
+        name="TramitsSection"
+        component={TramitsSection}
         options={{
           title: 'Tràmits',
         }}

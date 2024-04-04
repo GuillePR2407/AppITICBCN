@@ -80,6 +80,7 @@ export default function PaperExample() {
         colors: {
           ...selectedTheme.colors,
           primary: '#30EFBC',
+          onSecondary: '#ECE6F0',
           secondaryContainer: '#30EFBC',
         },
       };

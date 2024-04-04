@@ -21,7 +21,7 @@ const itemsData = [
 },
 ];
 
-const InfoSection = () => {
+const TramitsSection = () => {
 
     const theme = useTheme();
 
@@ -39,4 +39,4 @@ const InfoSection = () => {
     );
 }
 
-export default InfoSection;
+export default TramitsSection;

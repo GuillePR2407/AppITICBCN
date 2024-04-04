@@ -5,6 +5,6 @@ export type RootStackParamList = {
     Noticia: {
         url: string;
     };
-    Tramits: undefined;
+    TramitsSection: undefined;
     InfoSection: undefined;
 };
