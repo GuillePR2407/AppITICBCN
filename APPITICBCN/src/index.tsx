@@ -1,5 +1,4 @@
 import * as React from 'react';
-
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import {
@@ -80,6 +79,7 @@ export default function PaperExample() {
         ...selectedTheme,
         colors: {
           ...selectedTheme.colors,
+          primary: '#30EFBC',
           secondaryContainer: '#30EFBC',
         },
       };

@@ -22,7 +22,7 @@ const InfoSection = () => {
             key={item.id}
             title={item.title}
             left={(props) => <List.Icon {...props} icon={item.icon} />}
-            style={{backgroundColor: theme.colors.onSecondary, margin:15, marginBottom:0, borderRadius:10}}
+            style={{backgroundColor: theme.colors.onPrimary, margin:15, marginBottom:0, borderRadius:10}}
             onPress={() => navigation.navigate('InfoItem', {
             titulo: item.title,
             subtitulo: item.subtitle,

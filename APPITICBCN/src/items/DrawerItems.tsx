@@ -35,7 +35,7 @@ const DrawerItemsData = [
     label: 'Tramits',
     icon: 'file-edit',
     key: 1,
-    routeName: 'Tramits'
+    routeName: 'TramitsSection'
   },
   { 
     label: 'Informació', 

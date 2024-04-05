@@ -8,13 +8,17 @@ import {
   createStackNavigator,
 } from '@react-navigation/stack';
 import { Appbar } from 'react-native-paper';
+import Logo from './components/Logo';
+import LogoPetit from './components/LogoPetit';
 
 import NewsSection from './NewsSection';
 import Login from './Login';
 import NoticiaItem from './items/NoticiaItem';
-import Tramits from './Tramits';
+import TramitsSection from './TramitsSection';
 import InfoSection from './InfoSection';
 import InfoItem from './items/InfoItem';
+import TramitsItem from './items/TramitsItem';
+import Register from './Register';
 
 const Stack = createStackNavigator();
 
@@ -32,11 +36,14 @@ export default function Root() {
         header: ({ navigation, route, options, back }) => {
           const title = getHeaderTitle(options, route.name);
           // Comprueba si la pantalla actual es 'Login'
-          const excludedScreens = ['Login', 'NoticiaItem', 'InfoItem'];
+          const excludedScreens = ['Login', 'NoticiaItem', 'InfoItem', 'TramitsItem'];
           const isExcludedScreen = excludedScreens.includes(route.name);
 
           return (
-            <Appbar.Header elevated>
+            <Appbar.Header style={{
+              justifyContent: 'space-between', 
+            }}
+            elevated>
               {!isExcludedScreen && (navigation as any).openDrawer ? (
                 // Muestra el botón del menú para todas las pantallas excepto Login
                 <Appbar.Action
@@ -52,7 +59,19 @@ export default function Root() {
                 // Muestra el botón de volver solo en la pantalla de Login
                 <Appbar.BackAction onPress={() => navigation.goBack()} />
               ) : null}
-              <Appbar.Content title={title} />
+              <Appbar.Content title={title} style={{ 
+                position: 'absolute', // Usa posición absoluta para centrar el título
+                left: 0,
+                right: 0,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }} />
+
+              <Appbar.Content 
+                title={
+                  <LogoPetit />
+                }style={{ position: 'absolute', right: 30}}
+              />
             </Appbar.Header>
           );
         },
@@ -73,15 +92,28 @@ export default function Root() {
           title: 'Login',
       }}/>
       <Stack.Screen
+        name="Register"
+        component={Register}
+        options={{
+          title: 'Registre',
+      }}/>
+      <Stack.Screen
         name="NoticiaItem"
         component={NoticiaItem}
         options={{
           title: 'Noticia',
+      }}
+      />
+      <Stack.Screen
+        name="TramitsSection"
+        component={TramitsSection}
+        options={{
+          title: 'Tràmits',
         }}
       />
       <Stack.Screen
-        name="Tràmits"
-        component={Tramits}
+        name="TramitsItem"
+        component={TramitsItem}
         options={{
           title: 'Tràmits',
         }}

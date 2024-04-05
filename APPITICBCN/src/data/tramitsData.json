@@ -1,0 +1,30 @@
+[
+    {
+        "id": 1,
+        "title": "Sol·licitud d'inscripció a graus",
+        "subtitle": "Informació sobre l'institut",
+        "text": "Texto de ejemplo para la información. Aquí puedes añadir más detalles.",
+        "icon": "clipboard-text-multiple-outline"
+    },
+    {
+        "id": 2,
+        "title": "Sol·licitud d'inscripció a les jornades de portes obertes",
+        "subtitle": "Subtítulo de ejemplo",
+        "text": "Texto de ejemplo para la información. Aquí puedes añadir más detalles.",
+        "icon": "clipboard-text-multiple-outline"
+    },
+    {
+        "id": 3,
+        "title": "Sol·licitud de baixa médica",
+        "subtitle": "Subtítulo de ejemplo",
+        "text": "Texto de ejemplo para la información. Aquí puedes añadir más detalles",
+        "icon": "clipboard-pulse-outline"
+    },
+    {
+        "id": 4,
+        "title": "Sol·licitud de baixa del centre",
+        "subtitle": "Subtítulo de ejemplo",
+        "text": "Texto de ejemplo para la información. Aquí puedes añadir más detalles",
+        "icon": "clipboard-remove-outline"
+    }
+]
