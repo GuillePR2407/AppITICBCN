@@ -17,4 +17,9 @@ export type RootStackParamList = {
         subtitulo: string;
         texto: string;
     }
+    QualificacionsSection: undefined;
+    ModulsSection: undefined;
+    HorariSection: undefined;
+    NotepadSection: undefined;
+    ChatSection: undefined;
 };
