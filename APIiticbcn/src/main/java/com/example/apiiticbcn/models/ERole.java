@@ -6,7 +6,9 @@ public enum ERole {
     ROLE_PROFESSOR,
     ROLE_STUDENT
 }
-//INSERT INTO roles(name) VALUES('ROLE_PROFESSOR');
-//INSERT INTO roles(name) VALUES('ROLE_STUDENT');
-//INSERT INTO roles(name) VALUES('ROLE_ADMIN');
-//INSERT INTO roles(name) VALUES('ROLE_USER');
+/*
+INSERT INTO roles(name) VALUES('ROLE_PROFESSOR');
+INSERT INTO roles(name) VALUES('ROLE_STUDENT');
+INSERT INTO roles(name) VALUES('ROLE_ADMIN');
+INSERT INTO roles(name) VALUES('ROLE_USER');
+*/

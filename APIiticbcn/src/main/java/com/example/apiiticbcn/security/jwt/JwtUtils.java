@@ -55,9 +55,9 @@ public class JwtUtils {
     return Jwts.parserBuilder().setSigningKey(key()).build()
         .parseClaimsJws(token).getBody().getSubject();
   }
-  
+
   private Key key() {
-    return Keys.hmacShaKeyFor(Decoders.BASE64.decode(jwtSecret));
+    return Keys.secretKeyFor(SignatureAlgorithm.HS256);
   }
 
   public boolean validateJwtToken(String authToken) {
@@ -69,7 +69,7 @@ public class JwtUtils {
     } catch (ExpiredJwtException e) {
       logger.error("JWT token is expired: {}", e.getMessage());
     } catch (UnsupportedJwtException e) {
-      logger.error("JWT token is unsupported: {}", e.getMessage());
+      logger.error("JWT token is unsupported: {}", e.getMessage()); 
     } catch (IllegalArgumentException e) {
       logger.error("JWT claims string is empty: {}", e.getMessage());
     }
