@@ -14,7 +14,7 @@ import {
   TouchableRipple,
 } from 'react-native-paper';
 
-import { PreferencesContext, useExampleTheme } from '../index';
+import { PreferencesContext } from '../index';
 const isWeb = Platform.OS === 'web';
 
 import userData from "../data/userData.json"
@@ -58,17 +58,18 @@ function DrawerItems() {
 
   const [drawerItemIndex, setDrawerItemIndex] = useState<number>(0);
   const preferences = React.useContext(PreferencesContext);
+  const { theme } = React.useContext(PreferencesContext);
 
   const _setDrawerItem = (index: number) => setDrawerItemIndex(index);
 
-  const [userRole, setUserRole] = useState(3);
+  const [userRole, setUserRole] = useState(2);
 
   const currentUserId = userRole === 2? "2" : "3";
   const currentUser = userData.find(user => user.id === currentUserId);
 
   const [isUserLoggedIn, setIsUserLoggedIn] = userRole !== 1? useState(true) : useState(false);
 
-  const { isV3, colors } = useExampleTheme();
+  const { colors } = theme;
 
   const getAcademicResources = () => {
     switch(userRole) {
@@ -91,15 +92,10 @@ function DrawerItems() {
   } = preferences;
 
   const coloredLabelTheme = {
-    colors: isV3
-      ? {
           secondaryContainer: MD3Colors.tertiary80,
           onSecondaryContainer: MD3Colors.tertiary20,
-        }
-      : {
           primary: MD2Colors.tealA200,
-        },
-  };
+  }
 
   const UserHeader = () => {
     const { role, name, course, imageUrl } = currentUser || {};
@@ -162,7 +158,9 @@ function DrawerItems() {
         </Drawer.Section>
       )}
       {isUserLoggedIn && (
-        <UserHeader />
+        <Drawer.Section>
+          <UserHeader />
+        </Drawer.Section>
       )}
 
       {!collapsed && (
@@ -201,7 +199,7 @@ function DrawerItems() {
           
           <Drawer.Section>
               <TouchableRipple onPress={toggleTheme}>
-                <View style={[styles.preference, isV3 && styles.v3Preference]}>
+                <View style={[styles.preference, styles.v3Preference]}>
                   <Text variant="labelLarge">Dark Theme</Text>
                   <View pointerEvents="none">
                     <Switch value={isDarkTheme} />

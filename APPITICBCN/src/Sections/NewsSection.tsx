@@ -3,9 +3,9 @@ import { ScrollView, View } from 'react-native';
 import { Avatar, Button, Card, Text, Paragraph, TouchableRipple } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { RootStackParamList } from './RootStackParamList';
+import { RootStackParamList } from '../RootStackParamList';
 
-import newsData from './data/newsData.json';
+import newsData from '../data/newsData.json';
 
 
 

@@ -11,14 +11,15 @@ import { Appbar } from 'react-native-paper';
 import Logo from './components/Logo';
 import LogoPetit from './components/LogoPetit';
 
-import NewsSection from './NewsSection';
+import NewsSection from './Sections/NewsSection';
 import Login from './Login';
 import NoticiaItem from './items/NoticiaItem';
-import TramitsSection from './TramitsSection';
-import InfoSection from './InfoSection';
+import TramitsSection from './Sections/TramitsSection';
+import InfoSection from './Sections/InfoSection';
 import InfoItem from './items/InfoItem';
 import TramitsItem from './items/TramitsItem';
 import Register from './Register';
+import QualificacionsSection from './Sections/QualificacionsSection';
 
 const Stack = createStackNavigator();
 
@@ -36,7 +37,7 @@ export default function Root() {
         header: ({ navigation, route, options, back }) => {
           const title = getHeaderTitle(options, route.name);
           // Comprueba si la pantalla actual es 'Login'
-          const excludedScreens = ['Login', 'NoticiaItem', 'InfoItem', 'TramitsItem'];
+          const excludedScreens = ['Login', 'NoticiaItem', 'InfoItem', 'TramitsItem', 'Register'];
           const isExcludedScreen = excludedScreens.includes(route.name);
 
           return (
@@ -130,6 +131,13 @@ export default function Root() {
         component={InfoItem}
         options={{
           title: 'Informació',
+        }}
+      />
+      <Stack.Screen
+        name="QualificacionsSection"
+        component={QualificacionsSection}
+        options={{
+          title: 'Qualificacions',
         }}
       />
     </Stack.Navigator>
