@@ -10,24 +10,38 @@ import {
 import { useFonts } from 'expo-font';
 import { useKeepAwake } from 'expo-keep-awake';
 import {
-  PaperProvider,
-  MD3DarkTheme,
-  MD3LightTheme,
-  MD2DarkTheme,
-  MD2LightTheme,
-  MD2Theme,
-  MD3Theme,
-  useTheme,
-  adaptNavigationTheme,
-  configureFonts,
+  Provider as PaperProvider,
 } from 'react-native-paper';
+
 import { SafeAreaInsetsContext } from 'react-native-safe-area-context';
 
-import DrawerItems from './DrawerItems';
+import DrawerItems from './items/DrawerItems';
 import App from './RootNavigator';
+
+import { TemaClaro, TemaOscuro } from '../assets/styles/CustomTheme';
+
+
 
 const PERSISTENCE_KEY = 'NAVIGATION_STATE';
 const PREFERENCES_KEY = 'APP_PREFERENCES';
+
+const CombinedDarkTheme = {
+  ...NavigationDarkTheme,
+  ...TemaOscuro,
+  colors: {
+    ...NavigationDarkTheme.colors,
+    ...TemaOscuro.colors,
+  },
+};
+
+const CombinedDefaultTheme = {
+  ...NavigationDefaultTheme,
+  ...TemaClaro,
+  colors: {
+    ...NavigationDefaultTheme.colors,
+    ...TemaClaro.colors,
+  },
+};
 
 export const PreferencesContext = React.createContext<{
   toggleTheme: () => void;
@@ -38,10 +52,8 @@ export const PreferencesContext = React.createContext<{
   customFontLoaded: boolean;
   rippleEffectEnabled: boolean;
   collapsed: boolean;
-  theme: MD2Theme | MD3Theme;
+  theme: typeof TemaClaro;
 } | null>(null);
-
-export const useExampleTheme = () => useTheme<MD2Theme | MD3Theme>();
 
 const Drawer = createDrawerNavigator<{ Home: undefined }>();
 
@@ -63,30 +75,9 @@ export default function PaperExample() {
   const [customFontLoaded, setCustomFont] = React.useState(false);
   const [rippleEffectEnabled, setRippleEffectEnabled] = React.useState(true);
 
-  const theme = React.useMemo(() => {
-    const selectedTheme = isDarkMode ? MD3DarkTheme : MD3LightTheme;
-    if (isDarkMode) {
-      return {
-        ...selectedTheme,
-        colors: {
-          ...selectedTheme.colors,
-          accent: 'yellow',
-          primary: '#30EFBC',
-        },
-      };
-    }else{
-      return {
-        ...selectedTheme,
-        colors: {
-          ...selectedTheme.colors,
-          primary: '#30EFBC',
-          onSecondary: '#ECE6F0',
-          secondaryContainer: '#30EFBC',
-        },
-      };
-    }
-    
-  }, [isDarkMode, themeVersion]);
+  const theme = isDarkMode ? CombinedDarkTheme : CombinedDefaultTheme;
+
+  const toggleThemeVersion = () => setThemeVersion(prevVersion => (prevVersion === 2 ? 3 : 2));
   
 
   React.useEffect(() => {
@@ -116,6 +107,8 @@ export default function PaperExample() {
 
         if (preferences) {
           setIsDarkMode(preferences.theme === 'dark');
+          // Assuming you want to save and restore themeVersion as well
+          setThemeVersion(preferences.themeVersion || 3);
         }
       } catch (e) {
         // ignore error
@@ -132,6 +125,7 @@ export default function PaperExample() {
           PREFERENCES_KEY,
           JSON.stringify({
             theme: isDarkMode ? 'dark' : 'light',
+            themeVersion, // Save themeVersion
           })
         );
       } catch (e) {
@@ -140,103 +134,48 @@ export default function PaperExample() {
     };
 
     savePrefs();
-  }, [isDarkMode]);
+  }, [isDarkMode, themeVersion]);
 
-  const preferences = React.useMemo(
-    () => ({
-      toggleTheme: () => setIsDarkMode((oldValue) => !oldValue),
-      toggleCollapsed: () => setCollapsed(!collapsed),
-      toggleCustomFont: () => setCustomFont(!customFontLoaded),
-      toggleRippleEffect: () => setRippleEffectEnabled(!rippleEffectEnabled),
-      toggleThemeVersion: () => {
-        setCustomFont(false);
-        setCollapsed(false);
-        setThemeVersion((oldThemeVersion) => (oldThemeVersion === 2 ? 3 : 2));
-        setRippleEffectEnabled(true);
-      },
-      customFontLoaded,
-      rippleEffectEnabled,
-      collapsed,
-      theme,
-    }),
-    [theme, collapsed, customFontLoaded, rippleEffectEnabled]
-  );
+  const preferences = React.useMemo(() => ({
+    toggleTheme: () => setIsDarkMode(!isDarkMode),
+    toggleThemeVersion,
+    toggleCollapsed: () => setCollapsed(!collapsed),
+    toggleCustomFont: () => setCustomFont(!customFontLoaded),
+    toggleRippleEffect: () => setRippleEffectEnabled(!rippleEffectEnabled),
+    customFontLoaded,
+    rippleEffectEnabled,
+    collapsed,
+    theme,
+  }), [theme, collapsed, customFontLoaded, rippleEffectEnabled, isDarkMode]);
 
-  if (!isReady && !fontsLoaded) {
+  if (!isReady || !fontsLoaded) {
     return null;
   }
 
-  const { LightTheme, DarkTheme } = adaptNavigationTheme({
-    reactNavigationLight: NavigationDefaultTheme,
-    reactNavigationDark: NavigationDarkTheme,
-  });
-
-  const CombinedDefaultTheme = {
-    ...MD3LightTheme,
-    ...LightTheme,
-    colors: {
-      ...MD3LightTheme.colors,
-      ...LightTheme.colors,
-    },
-  };
-
-  const CombinedDarkTheme = {
-    ...MD3DarkTheme,
-    ...DarkTheme,
-    colors: {
-      ...MD3DarkTheme.colors,
-      ...DarkTheme.colors,
-    },
-  };
-
-  const combinedTheme = isDarkMode ? CombinedDarkTheme : CombinedDefaultTheme;
-  const configuredFontTheme = {
-    ...combinedTheme,
-    fonts: configureFonts({
-      config: {
-        fontFamily: 'Abel',
-      },
-    }),
-  };
 
   return (
-    <PaperProvider
-      settings={{ rippleEffectEnabled: preferences.rippleEffectEnabled }}
-      theme={customFontLoaded ? configuredFontTheme : theme}
-    >
+    <PaperProvider theme={theme}>
       <PreferencesContext.Provider value={preferences}>
-        <React.Fragment>
-          <NavigationContainer
-            theme={combinedTheme}
-            initialState={initialState}
-            onStateChange={(state) =>
-              AsyncStorage.setItem(PERSISTENCE_KEY, JSON.stringify(state))
-            }
-          >
-            <SafeAreaInsetsContext.Consumer>
-              {(insets) => {
-                const { left, right } = insets || { left: 0, right: 0 };
-                const collapsedDrawerWidth = 80 + Math.max(left, right);
-                return (
-                  <Drawer.Navigator
-                    screenOptions={{
-                      drawerStyle: collapsed && {
-                        width: collapsedDrawerWidth,
-                      },
-                    }}
-                    drawerContent={() => <DrawerItems />}
-                  >
-                    <Drawer.Screen
-                      name="Home"
-                      component={App}
-                      options={{ headerShown: false }}
-                    />
-                  </Drawer.Navigator>
-                );
-              }}
-            </SafeAreaInsetsContext.Consumer>
-          </NavigationContainer>
-        </React.Fragment>
+        <NavigationContainer theme={theme} initialState={initialState}>
+          <SafeAreaInsetsContext.Consumer>
+            {(insets) => {
+              const { left, right } = insets || { left: 0, right: 0 };
+              const collapsedDrawerWidth = 80 + Math.max(left, right);
+              return (
+                <Drawer.Navigator
+                  screenOptions={{
+                    drawerStyle: {
+                      width: collapsed ? collapsedDrawerWidth : undefined,
+                    },
+                  }}
+                  drawerContent={() => <DrawerItems />}
+                >
+                  <Drawer.Screen name="Home" component={App} options={{ headerShown: false }} />
+                </Drawer.Navigator>
+              );
+            }}
+          </SafeAreaInsetsContext.Consumer>
+        </NavigationContainer>
       </PreferencesContext.Provider>
     </PaperProvider>
   );

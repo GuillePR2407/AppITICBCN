@@ -1,0 +1,141 @@
+[
+    {
+        "id": 1,
+        "title": "DAM M6: Accés a dades",
+        "professor": "Xavi Quesada",
+        "description": "Descripción detallada del modulo.",
+        "nota":"8",
+        "ufs": [
+            {
+                "name": "UF1: Introducció a l'accés a dades",
+                "detail": "Detalles de la UF1",
+                "nota": "8"
+            },
+            {
+                "name": "UF2: Operacions CRUD",
+                "detail": "Detalles de la UF2",
+                "nota": "9"
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "title": "DAM M7: Desenvolupament d’interfícies",
+        "professor": "Gonzalo Spagnuolo",
+        "description": "Descripción detallada del modulo.",
+        "nota": "10",
+        "ufs": [
+            {
+                "name": "UF1: Fundaments del desenvolupament d’interfícies",
+                "detail": "Detalles de la UF1",
+                "nota": "10"
+            },
+            {
+                "name": "UF2: Desenvolupament d’interfícies gràfiques",
+                "detail": "Detalles de la UF2",
+                "nota": "9"
+            },
+            {
+                "name": "UF3: Desenvolupament d’interfícies web",
+                "detail": "Detalles de la UF3",
+                "nota": "10"
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "title": "DAM M8: Programació multimèdia i dispositius mòbils",
+        "professor": "Xavier Lara",
+        "description": "Descripción detallada del modulo.",
+        "nota": "10",
+        "ufs": [
+            {
+                "name": "UF1: Desenvolupament d'aplicacions multimèdia",
+                "detail": "Detalles de la UF1",
+                "nota": "10"
+            },
+            {
+                "name": "UF2: Desenvolupament per a dispositius mòbils",
+                "detail": "Detalles de la UF2",
+                "nota": "10"
+            },
+            {
+                "name": "UF3: Integració de components multimèdia en dispositius mòbils",
+                "detail": "Detalles de la UF3",
+                "nota": "10"
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "title": "DAM M9: Programació de serveis i processos",
+        "professor": "Eduard Lara",
+        "description": "Descripción detallada del modulo.",
+        "nota": "10",
+        "ufs": [
+            {
+                "name": "UF1: Programació de serveis web",
+                "detail": "Detalles de la UF1",
+                "nota": "10"
+            },
+            {
+                "name": "UF2: Gestió de processos i fils d'execució",
+                "detail": "Detalles de la UF2",
+                "nota": "10"
+            },
+            {
+                "name": "UF3: Integració de serveis",
+                "detail": "Detalles de la UF3",
+                "nota": "10"
+            }
+        ]
+    },
+    {
+        "id": 5,
+        "title": "DAM M13: Projecte",
+        "professor": "Pere Guitart, Eduard Lara, Ghalia Martínez, Roger Sobrino",
+        "description": "Descripción detallada del modulo.",
+        "nota": "6",
+        "ufs": [
+            {
+                "name": "UF1: Preparació del projecte",
+                "detail": "Detalles de la UF1",
+                "nota": "4"
+            },
+            {
+                "name": "UF2: Desenvolupament del projecte",
+                "detail": "Detalles de la UF2",
+                "nota": "4"
+            },
+            {
+                "name": "UF3: Presentació del projecte",
+                "detail": "Detalles de la UF3",
+                "nota": "10"
+            }
+        ]
+    },
+    {
+        "id": 6,
+        "title": "DAM: Orientació en Big Data",
+        "professor": "Xavi Quesada",
+        "description": "Descripción detallada del modulo.",
+        "nota": "7",
+        "ufs": [
+            {
+                "name": "UF1: Introducció al Big Data",
+                "detail": "Detalles de la UF1",
+                "nota": "8"
+            },
+            {
+                "name": "UF2: Tècniques de processament de dades",
+                "detail": "Detalles de la UF2",
+                "nota": "6"
+            },
+            {
+                "name": "UF3: Implementació de solucions de Big Data",
+                "detail": "Detalles de la UF3",
+                "nota": "7"
+            }
+        ]
+    }
+]

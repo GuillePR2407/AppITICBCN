@@ -8,14 +8,18 @@ import {
   createStackNavigator,
 } from '@react-navigation/stack';
 import { Appbar } from 'react-native-paper';
+import Logo from './components/Logo';
+import LogoPetit from './components/LogoPetit';
 
-import NewsSection from './NewsSection';
+import NewsSection from './Sections/NewsSection';
 import Login from './Login';
+import NoticiaItem from './items/NoticiaItem';
+import TramitsSection from './Sections/TramitsSection';
+import InfoSection from './Sections/InfoSection';
+import InfoItem from './items/InfoItem';
+import TramitsItem from './items/TramitsItem';
 import Register from './Register';
-import Noticia from './Noticia';
-import TramitsSection from './TramitsSection';
-import InfoSection from './InfoSection';
-import Logo from './components/LogoPetit';
+import QualificacionsSection from './Sections/QualificacionsSection';
 
 const Stack = createStackNavigator();
 
@@ -33,11 +37,15 @@ export default function Root() {
         header: ({ navigation, route, options, back }) => {
           const title = getHeaderTitle(options, route.name);
           // Comprueba si la pantalla actual es 'Login'
-          const isLoginScreen = route.name === 'Login';
+          const excludedScreens = ['Login', 'NoticiaItem', 'InfoItem', 'TramitsItem', 'Register'];
+          const isExcludedScreen = excludedScreens.includes(route.name);
 
           return (
-            <Appbar.Header elevated>
-              {!isLoginScreen && (navigation as any).openDrawer ? (
+            <Appbar.Header style={{
+              justifyContent: 'space-between', 
+            }}
+            elevated>
+              {!isExcludedScreen && (navigation as any).openDrawer ? (
                 // Muestra el botón del menú para todas las pantallas excepto Login
                 <Appbar.Action
                   icon="menu"
@@ -52,12 +60,18 @@ export default function Root() {
                 // Muestra el botón de volver solo en la pantalla de Login
                 <Appbar.BackAction onPress={() => navigation.goBack()} />
               ) : null}
-              <Appbar.Content title={title} />
+              <Appbar.Content title={title} style={{ 
+                position: 'absolute', // Usa posición absoluta para centrar el título
+                left: 0,
+                right: 0,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }} />
 
               <Appbar.Content 
                 title={
-                  <Logo />
-                }style={{marginRight: 0}}
+                  <LogoPetit />
+                }style={{ position: 'absolute', right: 30}}
               />
             </Appbar.Header>
           );
@@ -77,13 +91,18 @@ export default function Root() {
         component={Login}
         options={{
           title: 'Login',
-      }}
-      />
-        <Stack.Screen
+      }}/>
+      <Stack.Screen
         name="Register"
         component={Register}
         options={{
-          title: 'Register',
+          title: 'Registre',
+      }}/>
+      <Stack.Screen
+        name="NoticiaItem"
+        component={NoticiaItem}
+        options={{
+          title: 'Noticia',
       }}
       />
       <Stack.Screen
@@ -94,10 +113,31 @@ export default function Root() {
         }}
       />
       <Stack.Screen
+        name="TramitsItem"
+        component={TramitsItem}
+        options={{
+          title: 'Tràmits',
+        }}
+      />
+      <Stack.Screen
         name="InfoSection"
         component={InfoSection}
         options={{
           title: 'Informació',
+        }}
+      />
+      <Stack.Screen
+        name="InfoItem"
+        component={InfoItem}
+        options={{
+          title: 'Informació',
+        }}
+      />
+      <Stack.Screen
+        name="QualificacionsSection"
+        component={QualificacionsSection}
+        options={{
+          title: 'Qualificacions',
         }}
       />
     </Stack.Navigator>
