@@ -1,5 +1,6 @@
 package com.example.apiiticbcn.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.util.HashSet;
@@ -43,6 +44,7 @@ public class Role {
         this.name = name;
     }
 
+    @JsonIgnore
     public Set<User> getUsers() {
         return users;
     }

@@ -62,7 +62,7 @@ function DrawerItems() {
 
   const _setDrawerItem = (index: number) => setDrawerItemIndex(index);
 
-  const [userRole, setUserRole] = useState(2);
+  const [userRole, setUserRole] = useState(1);
 
   const currentUserId = userRole === 2? "2" : "3";
   const currentUser = userData.find(user => user.id === currentUserId);

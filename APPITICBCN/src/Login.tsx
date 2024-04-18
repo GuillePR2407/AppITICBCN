@@ -6,7 +6,7 @@ import { PreferencesContext } from './index';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from './RootStackParamList';
-import Register from './Register';
+import axios from 'axios';
 
 const Login = () => {
     type NewsNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>
@@ -17,12 +17,34 @@ const Login = () => {
 
     const [checked, setChecked] = React.useState(false);
     
-    const [userName, setUserName] = useState('');
+    const [email, setUserName] = useState('');
     const [password, setPassword] = useState('');
 
     const handleLogin = () => {
-        console.log('Username:', userName);
-        console.log('Password:', password);
+        axios.post('http://10.0.2.2:8082/api/auth/signin', { // Replace with your API URL
+            email: email,
+            password: password,
+        })
+        .then(response => {
+            console.log('Success:', response.data);
+            // Here you can handle the response, for example save the JWT token to local storage
+    
+            // After successful authentication, make a request to get the role ID
+            axios.get('http://10.0.2.2:8082/api/general/role/'+ email) // Replace with your API URL
+            .then(response => {
+                const roleId = response.data;
+                console.log('Role ID:', roleId);
+                // Here you can handle the role ID, for example save it to local storage
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                // Here you can handle errors
+            });
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            // Here you can handle errors
+        });
     };
 
     const navigateToRegister = () => {
@@ -37,7 +59,7 @@ const Login = () => {
                     theme={{ colors: { primary: "#3A31F4" }}}  
                     style={{ marginTop: 20, marginBottom: 20 }}
                     label="Email"
-                    value={userName}
+                    value={email}
                     onChangeText={setUserName}
                     mode="outlined"
                 />
