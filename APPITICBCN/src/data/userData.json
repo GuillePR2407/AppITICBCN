@@ -10,7 +10,14 @@
         "id": "3",
         "role": 3,
         "name": "Professor",
-        "course": "DAM2 A",
+        "course": "Tutor DAM2A",
+        "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Userimage.png?20181011102003"
+    },
+    {
+        "id": "4",
+        "role": 4,
+        "name": "Administrador",
+        "course": "ITICBCN",
         "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/e/e0/Userimage.png?20181011102003"
     }
 ]

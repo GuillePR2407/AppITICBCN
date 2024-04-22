@@ -22,4 +22,6 @@ export type RootStackParamList = {
     HorariSection: undefined;
     NotepadSection: undefined;
     ChatSection: undefined;
+    AddUsersSection: undefined;
+    UsersSection: undefined;
 };
