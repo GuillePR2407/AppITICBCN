@@ -21,7 +21,7 @@ interface UserProviderProps {
 }
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
-  const [userRole, setUserRole] = useState<UserRole>(2); // Default to 'Logout'
+  const [userRole, setUserRole] = useState<UserRole>(1); // Default to 'Logout'
 
     return (
     <UserContext.Provider value={{ userRole }}>
