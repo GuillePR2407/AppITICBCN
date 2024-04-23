@@ -93,7 +93,12 @@ const QualificacionsSection = () => {
                                         height: 50, 
                                         justifyContent: 'center', 
                                         alignItems: 'center',
-                                        borderRadius: 10
+                                        borderRadius: 10,
+                                        shadowColor: "#000",
+                                        shadowOffset: { width: 0, height: 2 },
+                                        shadowOpacity: 0.23,
+                                        shadowRadius: 2.62,
+                                        elevation: 4
                                     }}>
                                         <Text style={{
                                             color: theme.colors.onQuadratNotes,

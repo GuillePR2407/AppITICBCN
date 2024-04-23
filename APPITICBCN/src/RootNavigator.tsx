@@ -11,6 +11,8 @@ import { Appbar } from 'react-native-paper';
 import Logo from './components/Logo';
 import LogoPetit from './components/LogoPetit';
 
+import { useUser } from './UserContext';
+
 import NewsSection from './Sections/NewsSection';
 import Login from './Login';
 import NoticiaItem from './items/NoticiaItem';
@@ -20,6 +22,8 @@ import InfoItem from './items/InfoItem';
 import TramitsItem from './items/TramitsItem';
 import Register from './Register';
 import QualificacionsSection from './Sections/QualificacionsSection';
+import AddUsersSection from './Sections/AddUsersSection';
+import UsersSection from './Sections/UsersSection';
 
 const Stack = createStackNavigator();
 
@@ -29,8 +33,11 @@ export default function Root() {
       ? CardStyleInterpolators.forFadeFromBottomAndroid
       : CardStyleInterpolators.forHorizontalIOS;
 
+  const { userRole } = useUser();
+  const initialRouteName = userRole === 4 ? 'AddUsersSection' : 'NewsSection';
+
   return (
-    <Stack.Navigator
+    <Stack.Navigator initialRouteName={initialRouteName}
       screenOptions={({ navigation, route }) => ({
         detachPreviousScreen: !navigation.isFocused(),
         cardStyleInterpolator,
@@ -78,14 +85,16 @@ export default function Root() {
         },
       })}
     >
-      {/* Cambiado de ExampleList a NewsSection */}
-      <Stack.Screen
-        name="NewsSection"
-        component={NewsSection}
+      {userRole === 4 ? ( 
+        <Stack.Screen name="AddUsersSection" component={AddUsersSection} 
         options={{
-          title: 'Noticias',
-        }}
-      />
+          title: 'Afegir usuaris',
+        }} />
+      ) : (
+        <Stack.Screen name="NewsSection" component={NewsSection} 
+        options={{
+          title: 'Noticies',
+        }} />)}
       <Stack.Screen
         name="Login"
         component={Login}
@@ -138,6 +147,13 @@ export default function Root() {
         component={QualificacionsSection}
         options={{
           title: 'Qualificacions',
+        }}
+      />
+      <Stack.Screen
+        name="UsersSection"
+        component={UsersSection}
+        options={{
+          title: 'Usuaris',
         }}
       />
     </Stack.Navigator>
