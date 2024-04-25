@@ -4,6 +4,7 @@ type UserRole = 1 | 2 | 3 | 4; // 1: Logout, 2: Alumno, 3: Profesor, 4: Admin
 
 interface UserContextType {
     userRole: UserRole;
+    setUserRole: (role: UserRole) => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -24,7 +25,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
   const [userRole, setUserRole] = useState<UserRole>(1); // Default to 'Logout'
 
     return (
-    <UserContext.Provider value={{ userRole }}>
+    <UserContext.Provider value={{ userRole, setUserRole }}>
         {children}
     </UserContext.Provider>
     );
