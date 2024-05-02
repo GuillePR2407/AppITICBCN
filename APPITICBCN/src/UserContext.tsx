@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, ReactNode } from 'react';
 
-type UserRole = 1 | 2 | 3 | 4; // 1: Logout, 2: Alumno, 3: Profesor, 4: Admin
+type UserRole = 0 | 1 | 2 | 3 | 4; // 0: Logout, 1: User 2: Alumno, 3: Profesor, 4: Admin
 
 interface UserContextType {
     userRole: UserRole;
@@ -22,7 +22,7 @@ interface UserProviderProps {
 }
 
 export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
-  const [userRole, setUserRole] = useState<UserRole>(1); // Default to 'Logout'
+    const [userRole, setUserRole] = useState<UserRole>(0);
 
     return (
     <UserContext.Provider value={{ userRole, setUserRole }}>

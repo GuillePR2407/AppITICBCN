@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { I18nManager, Image, StyleSheet, View, Platform } from 'react-native';
 import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
@@ -58,12 +58,18 @@ function DrawerItems() {
     currentUserId = "2";
   } else if (userRole === 3){
     currentUserId = "3";
-  } else {
+  } else if (userRole === 4){
     currentUserId = "4";
+  } else {
+    currentUserId = "1";
   }
   const currentUser = userData.find(user => user.id === currentUserId);
 
-  const [isUserLoggedIn, setIsUserLoggedIn] = userRole !== 1? useState(true) : useState(false);
+  const [isUserLoggedIn, setIsUserLoggedIn] = userRole === 1? useState(false) : useState(true);
+
+  useEffect(() => {
+    setIsUserLoggedIn(userRole > 1);
+  }, [userRole]);
 
   const { colors } = theme;
 
@@ -72,7 +78,7 @@ function DrawerItems() {
       case 2: // Alumno
         return AcademicResourcesData.filter(item => item.key !== 4); 
       case 3: // Profesor
-        return AcademicResourcesData.filter(item => item.key !== 3);
+        return AcademicResourcesData.filter(item => item.key !== 3);  
       default:
         return []; // No mostrar para otros roles
     }

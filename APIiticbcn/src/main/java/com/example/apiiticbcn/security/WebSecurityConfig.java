@@ -20,6 +20,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 import com.example.apiiticbcn.security.jwt.AuthEntryPointJwt;
 import com.example.apiiticbcn.security.jwt.AuthTokenFilter;
 import com.example.apiiticbcn.security.services.UserDetailsServiceImpl;
+import org.springframework.web.cors.CorsConfiguration;
+
+import java.util.Arrays;
+import java.util.Collections;
 
 @Configuration
 //@EnableWebSecurity
@@ -84,19 +88,26 @@ public class WebSecurityConfig { // extends WebSecurityConfigurerAdapter {
   
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-    http.csrf(csrf -> csrf.disable())
-        .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
-        .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-        .authorizeHttpRequests(auth -> 
-          auth.requestMatchers("/api/auth/**").permitAll()
-              .requestMatchers("/api/test/**").permitAll()
-              .anyRequest().authenticated()
-        );
-    
-    http.authenticationProvider(authenticationProvider());
+    http
+            .cors(cors -> cors.configurationSource(request -> {
+              CorsConfiguration configuration = new CorsConfiguration();
+              configuration.setAllowedOrigins(Collections.singletonList("*"));
+              configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
+              configuration.setAllowedHeaders(Collections.singletonList("*"));
+              return configuration;
+            }))
+            .csrf(csrf -> csrf.disable())
+            .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth ->
+                    auth.requestMatchers("/api/auth/**").permitAll()
+                            .requestMatchers("/api/test/**").permitAll()
+                            .anyRequest().authenticated()
+            );
 
+    http.authenticationProvider(authenticationProvider());
     http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
-    
+
     return http.build();
   }
 }

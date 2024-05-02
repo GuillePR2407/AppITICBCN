@@ -31,8 +31,6 @@ const Login = () => {
             if (role) {
                 setUserRole(role); // Actualizar el contexto con el nuevo rol
                 console.log('User role set to:', role);
-            } else {
-                setUserRole(2);
             }
 
             navigation.navigate('NewsSection');

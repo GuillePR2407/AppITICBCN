@@ -17,6 +17,8 @@ export const loginUser = async (email: string, password: string): Promise<void> 
         const jwtToken = response.data.jwtToken;
         console.log('JWT Token:', jwtToken);
 
+        axios.defaults.headers.common = {'Authorization': `Bearer ${jwtToken}`}
+
         // Guardar el JWT en AsyncStorage
         await AsyncStorage.setItem('jwtToken', jwtToken);
         console.log('JWT Token saved to AsyncStorage');
@@ -29,15 +31,13 @@ export const loginUser = async (email: string, password: string): Promise<void> 
 export const fetchUserRole = async (email) => {
     try {
         const jwtToken = await AsyncStorage.getItem('jwtToken'); // Obtener el JWT almacenado
+
         if (!jwtToken) {
             throw new Error('JWT Token is not available');
         }
 
-        const response = await axios.get(`${API_URL}/general/roles/${email}`, {
-            headers: {
-                Authorization: `Bearer ${jwtToken}` // Incluir el JWT en los headers de la solicitud
-            }
-        });
+        axios.defaults.headers.common = {'Authorization': `Bearer ${jwtToken}`}
+        const response = await axios.get(`${API_URL}/general/role/${email}`);
         console.log('Role fetched:', response.data);
         return response.data; // Asumiendo que el rol viene directamente en response.data
     } catch (error) {

@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
@@ -64,27 +65,38 @@ public class AuthController {
    */
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-
-    Authentication authentication = authenticationManager
-        .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
-
+    // Autenticación del usuario
+    Authentication authentication = authenticationManager.authenticate(
+            new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
+    // Detalles del usuario autenticado
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-
+    
+    // Generación de la cookie con el JWT
     ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
 
-    List<String> roles = userDetails.getAuthorities().stream()
-        .map(item -> item.getAuthority())
-        .collect(Collectors.toList());
+    // Extracción del token JWT de la cookie
+    String jwtToken = jwtCookie.getValue();
 
-    return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-        .body(new UserInfoResponse(userDetails.getId(),
-                                   userDetails.getUsername(),
-                                   userDetails.getEmail(),
-                                   roles));
+    // Roles del usuario
+    List<String> roles = userDetails.getAuthorities().stream()
+            .map(GrantedAuthority::getAuthority)
+            .collect(Collectors.toList());
+
+    // Creación de la respuesta incluyendo el token JWT
+    UserInfoResponse userInfo = new UserInfoResponse(userDetails.getId(),
+            userDetails.getUsername(),
+            userDetails.getEmail(),
+            roles,
+            jwtToken); // Incluir el token en la respuesta
+
+    return ResponseEntity.ok()
+            .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+            .body(userInfo);
   }
-/*
+
+  /*
 {
   "username": "Guille",
   "email": "guille@iticbcn.cat",
