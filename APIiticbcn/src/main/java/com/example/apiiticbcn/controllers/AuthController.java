@@ -65,9 +65,10 @@ public class AuthController {
    */
   @PostMapping("/signin")
   public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
-    // Autenticación del usuario
-    Authentication authentication = authenticationManager.authenticate(
-            new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+
+    Authentication authentication = authenticationManager
+            .authenticate(new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+
     SecurityContextHolder.getContext().setAuthentication(authentication);
 
     // Detalles del usuario autenticado
@@ -76,87 +77,79 @@ public class AuthController {
     // Generación de la cookie con el JWT
     ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
 
-    // Extracción del token JWT de la cookie
     String jwtToken = jwtCookie.getValue();
 
-    // Roles del usuario
     List<String> roles = userDetails.getAuthorities().stream()
-            .map(GrantedAuthority::getAuthority)
+            .map(item -> item.getAuthority())
             .collect(Collectors.toList());
 
-    // Creación de la respuesta incluyendo el token JWT
-    UserInfoResponse userInfo = new UserInfoResponse(userDetails.getId(),
-            userDetails.getUsername(),
-            userDetails.getEmail(),
-            roles,
-            jwtToken); // Incluir el token en la respuesta
-
-    return ResponseEntity.ok()
-            .header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
-            .body(userInfo);
+    return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, jwtCookie.toString())
+            .body(new UserInfoResponse(userDetails.getId(),
+                    userDetails.getUsername(),
+                    userDetails.getEmail(),
+                    roles));
   }
-
   /*
-{
-  "username": "Guille",
-  "email": "guille@iticbcn.cat",
-  "password": "123456",
-  "role": "admin"
-}
-*/
-@Transactional
-@PostMapping("/signup")
-public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
-  if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-    return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
+  {
+    "username": "Guille",
+    "email": "guille@iticbcn.cat",
+    "password": "123456",
+    "role": "admin"
   }
-
-  if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-    return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
-  }
-
-  // Create new user's account
-  User user = new User(signUpRequest.getUsername(),
-          signUpRequest.getEmail(),
-          encoder.encode(signUpRequest.getPassword()));
-
-  String strRole = signUpRequest.getRole();
-  Role role;
-
-  if (strRole == null || strRole.isEmpty()) {
-    role = roleRepository.findByName(ERole.ROLE_USER)
-            .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-  } else {
-    switch (strRole) {
-      case "admin":
-        role = roleRepository.findByName(ERole.ROLE_ADMIN)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        break;
-      case "prof":
-        role = roleRepository.findByName(ERole.ROLE_PROFESSOR)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        break;
-      case "alum":
-        role = roleRepository.findByName(ERole.ROLE_STUDENT)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-        break;
-      default:
-        role = roleRepository.findByName(ERole.ROLE_USER)
-                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+  */
+  @Transactional
+  @PostMapping("/signup")
+  public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    if (userRepository.existsByUsername(signUpRequest.getUsername())) {
+      return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
     }
+
+    if (userRepository.existsByEmail(signUpRequest.getEmail())) {
+      return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
+    }
+
+    // Create new user's account
+    User user = new User(signUpRequest.getUsername(),
+            signUpRequest.getEmail(),
+            encoder.encode(signUpRequest.getPassword()));
+
+    String strRole = signUpRequest.getRole();
+    Role role;
+
+    if (strRole == null || strRole.isEmpty()) {
+      role = roleRepository.findByName(ERole.ROLE_USER)
+              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+    } else {
+      switch (strRole) {
+        case "admin":
+          role = roleRepository.findByName(ERole.ROLE_ADMIN)
+                  .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+          break;
+        case "prof":
+          role = roleRepository.findByName(ERole.ROLE_PROFESSOR)
+                  .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+          break;
+        case "alum":
+          role = roleRepository.findByName(ERole.ROLE_STUDENT)
+                  .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+          break;
+        default:
+          role = roleRepository.findByName(ERole.ROLE_USER)
+                  .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+      }
+    }
+
+    user.setRole(role);
+
+    userRepository.save(user);
+
+    return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }
-
-  user.setRole(role);
-
-  userRepository.save(user);
-
-  return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
-}
 
   @PostMapping("/signout")
   public ResponseEntity<?> logoutUser() {
     ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
     return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
-        .body(new MessageResponse("You've been signed out!"));
+            .body(new MessageResponse("You've been signed out!"));
   }
 }
