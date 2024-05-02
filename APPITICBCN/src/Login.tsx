@@ -1,50 +1,46 @@
-import React, { useState } from 'react';
-import { View } from 'react-native';
-import { TextInput, Button, Text, Checkbox } from 'react-native-paper';
+import React, { useState, useContext } from 'react';
+import { View, Text } from 'react-native';
+import { TextInput, Button, Checkbox } from 'react-native-paper';
 import Logo from './components/Logo';
-import { PreferencesContext } from './index';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from './RootStackParamList';
-import axios from 'axios';
+import { loginUser, fetchUserRole } from './services/authService';
+import { PreferencesContext } from './index';
+import { useUser } from './UserContext';
 
 const Login = () => {
-    type NewsNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>
+    type NewsNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
 
     const navigation = useNavigation<NewsNavigationProp>();
+    const { theme } = useContext(PreferencesContext);
 
-    const { theme } = React.useContext(PreferencesContext);
-
-    const [checked, setChecked] = React.useState(false);
-    
-    const [email, setUserName] = useState('');
+    const [checked, setChecked] = useState(false);
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const handleLogin = () => {
-        axios.post('http://10.0.2.2:8082/api/auth/signin', { // Replace with your API URL
-            email: email,
-            password: password,
-        })
-        .then(response => {
-            console.log('Success:', response.data);
-            // Here you can handle the response, for example save the JWT token to local storage
-    
-            // After successful authentication, make a request to get the role ID
-            axios.get('http://10.0.2.2:8082/api/general/role/'+ email) // Replace with your API URL
-            .then(response => {
-                const roleId = response.data;
-                console.log('Role ID:', roleId);
-                // Here you can handle the role ID, for example save it to local storage
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                // Here you can handle errors
-            });
-        })
-        .catch((error) => {
-            console.error('Error:', error);
-            // Here you can handle errors
-        });
+    const { setUserRole } = useUser();
+
+    const handleLogin = async () => {
+        try {
+            await loginUser(email, password);
+            console.log('Logged in');
+
+            // Aquí llamas a fetchUserRole y actualizas el contexto
+            const role = await fetchUserRole(email);
+            if (role) {
+                setUserRole(role); // Actualizar el contexto con el nuevo rol
+                console.log('User role set to:', role);
+            } else {
+                setUserRole(2);
+            }
+
+            navigation.navigate('NewsSection');
+
+            // Redirigir al usuario o realizar otras acciones
+        } catch (error) {
+            console.error('Login failed:', error);
+        }
     };
 
     const navigateToRegister = () => {
@@ -56,15 +52,15 @@ const Login = () => {
             <View style={{ width: '80%', alignSelf: 'center' }}>
                 <Logo />
                 <TextInput
-                    theme={{ colors: { primary: "#3A31F4" }}}  
+                    theme={{ colors: { primary: theme.colors.primary }}}  
                     style={{ marginTop: 20, marginBottom: 20 }}
                     label="Email"
                     value={email}
-                    onChangeText={setUserName}
+                    onChangeText={setEmail}
                     mode="outlined"
                 />
                 <TextInput  
-                    theme={{ colors: { primary: "#3A31F4" }}} 
+                    theme={{ colors: { primary: theme.colors.primary }}} 
                     style={{ marginTop: 20 }} 
                     label="Password"
                     value={password}
@@ -72,23 +68,20 @@ const Login = () => {
                     onChangeText={setPassword}
                     mode="outlined"
                 />
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text onPress={() => { setChecked(!checked); }}>Remember me</Text>
+                <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
                     <Checkbox
-                        theme={{ colors: { primary: "#3A31F4" }}}  
+                        theme={{ colors: { primary: theme.colors.primary }}}  
                         status={checked ? 'checked' : 'unchecked'}
-                        onPress={() => {
-                            setChecked(!checked);
-                        }}
+                        onPress={() => setChecked(!checked)}
                     />
+                    <Text onPress={() => setChecked(!checked)} style={{ marginLeft: 8 }}>
+                        Remember me
+                    </Text>
                 </View>
                 <Button 
                     mode="contained" 
                     onPress={handleLogin}
-                    labelStyle={{
-                        color: theme.colors.onDoneButton,
-                        fontSize: 20,
-                    }}
+                    labelStyle={{ color: theme.colors.onDoneButton, fontSize: 20 }}
                     style={{
                         marginTop: 20,
                         marginBottom: 20,
@@ -98,13 +91,12 @@ const Login = () => {
                         width: '60%',
                         alignSelf: 'center',
                         backgroundColor: theme.colors.doneButton,
-                        
                     }}
-                    >
+                >
                     Login
                 </Button>
-                <Text style={{alignSelf: 'center', fontSize: 18}} onPress={navigateToRegister}>
-                    Registrate!
+                <Text style={{ alignSelf: 'center', fontSize: 18 }} onPress={navigateToRegister}>
+                    ¡Regístrate!
                 </Text>
             </View>
         </View>

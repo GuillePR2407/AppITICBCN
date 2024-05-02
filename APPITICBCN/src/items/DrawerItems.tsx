@@ -4,6 +4,7 @@ import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import { RootStackParamList } from '../RootStackParamList';
+import { useUser } from '../UserContext';
 import {
   Badge,
   Drawer,
@@ -20,25 +21,15 @@ const isWeb = Platform.OS === 'web';
 import userData from "../data/userData.json"
 
 
-const RecursosGeneralsData = [
-  {
-    label: 'Notícies',
-    icon: 'newspaper',
-    key: 0,
-    routeName: 'NewsSection'
-  },
-  {
-    label: 'Tramits',
-    icon: 'file-edit',
-    key: 1,
-    routeName: 'TramitsSection'
-  },
-  { 
-    label: 'Informació', 
-    icon: 'information-outline', 
-    key: 2,
-    routeName: 'InfoSection'
-  },
+const GeneralResources = [
+  { label: 'Notícies', icon: 'newspaper', key: 0, routeName: 'NewsSection' },
+  { label: 'Tramits',icon: 'file-edit',key: 1,routeName: 'TramitsSection' },
+  { label: 'Informació', icon: 'information-outline', key: 2, routeName: 'InfoSection' },
+];
+
+const AdministratorResources = [
+  { label: 'Afegir usuaris', icon: 'account-plus-outline', key: 1, routeName: 'AddUsersSection' },
+  { label: 'Llista d\'usuaris', icon: 'account-multiple-outline', key: 2, routeName: 'UsersSection' },
 ];
 
 const AcademicResourcesData = [
@@ -47,9 +38,6 @@ const AcademicResourcesData = [
   { label: 'Horari', icon: 'calendar-month-outline', key: 5, routeName: 'HorariSection' },
   { label: 'Bloc de notes', icon: 'note-text-outline', key: 6, routeName: 'NotepadSection' },
   { label: 'Xat', icon: 'message-text-outline', key: 7, routeName: 'ChatSection' },
-  
-  
-  // Agrega más recursos académicos según necesites
 ];
 
 function DrawerItems() {
@@ -62,9 +50,17 @@ function DrawerItems() {
 
   const _setDrawerItem = (index: number) => setDrawerItemIndex(index);
 
-  const [userRole, setUserRole] = useState(1);
+  const { userRole } = useUser();
 
-  const currentUserId = userRole === 2? "2" : "3";
+  let currentUserId;
+
+  if (userRole === 2) {
+    currentUserId = "2";
+  } else if (userRole === 3){
+    currentUserId = "3";
+  } else {
+    currentUserId = "4";
+  }
   const currentUser = userData.find(user => user.id === currentUserId);
 
   const [isUserLoggedIn, setIsUserLoggedIn] = userRole !== 1? useState(true) : useState(false);
@@ -105,11 +101,7 @@ function DrawerItems() {
         <Image source={{ uri: imageUrl }} style={styles2.userImage} />
         <View>
           <Text>{name}</Text>
-          {role === 2 ? (
-            <Text>{course}</Text>
-          ) : (
-            <Text>Tutor {course}</Text>
-          )}
+          <Text>{course}</Text>
         </View>
       </View>
     );
@@ -163,10 +155,29 @@ function DrawerItems() {
         </Drawer.Section>
       )}
 
-      {!collapsed && (
+      {userRole === 4 && (
+        <Drawer.Section title="Tablero de Administrador">
+          {AdministratorResources.map((item) => (
+            <Drawer.Item
+              key={item.key}
+              icon={item.icon}
+              label={item.label}
+              theme={coloredLabelTheme}
+              active={drawerItemIndex === item.key}
+              onPress={() => {
+                setDrawerItemIndex(item.key);
+                navigation.navigate(item.routeName as keyof RootStackParamList);
+              }}
+              
+            />
+          ))}
+        </Drawer.Section>
+      )}
+
+      {userRole !== 4 && !collapsed &&  (
         <>
           <Drawer.Section title="Recursos Generals">
-            {RecursosGeneralsData.filter(item => item.key !== -1).map((props, index) => (
+            {GeneralResources.filter(item => item.key !== -1).map((props, index) => (
               <Drawer.Item
                 {...props}
                 key={props.key}
@@ -197,18 +208,19 @@ function DrawerItems() {
             </Drawer.Section>
           )}
           
-          <Drawer.Section>
-              <TouchableRipple onPress={toggleTheme}>
-                <View style={[styles.preference, styles.v3Preference]}>
-                  <Text variant="labelLarge">Dark Theme</Text>
-                  <View pointerEvents="none">
-                    <Switch value={isDarkTheme} />
-                  </View>
-                </View>
-              </TouchableRipple>
-            </Drawer.Section>
         </>
       )}
+
+      <Drawer.Section>
+        <TouchableRipple onPress={toggleTheme}>
+          <View style={[styles.preference, styles.v3Preference]}>
+            <Text variant="labelLarge">Dark Theme</Text>
+            <View pointerEvents="none">
+              <Switch value={isDarkTheme} />
+            </View>
+          </View>
+        </TouchableRipple>
+      </Drawer.Section>
     </DrawerContentScrollView>
   );
 }

@@ -1,10 +1,4 @@
-// Defina una interfaz para sus colores personalizados.
-interface CustomColors {
-  listItem: string;
-}
-
 import { MD3LightTheme, MD3DarkTheme } from 'react-native-paper';
-
 
 export const TemaClaro = {
   ...MD3LightTheme,
