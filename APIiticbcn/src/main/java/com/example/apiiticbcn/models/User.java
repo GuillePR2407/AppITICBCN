@@ -35,6 +35,10 @@ public class User {
     @JoinColumn(name = "role_id", nullable = false)
     private Role role;
 
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "matricula_id")
+    private Matricula matricula;
+
     public User() {
     }
 
@@ -82,5 +86,13 @@ public class User {
 
     public void setRole(Role role) {
         this.role = role;
+    }
+
+    public Matricula getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(Matricula matricula) {
+        this.matricula = matricula;
     }
 }

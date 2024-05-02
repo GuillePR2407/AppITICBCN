@@ -2,6 +2,7 @@ package com.example.apiiticbcn.security.services;
 
 
 
+import com.example.apiiticbcn.models.Matricula;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -30,6 +31,21 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
   public List<User> getAllUsers() {
     return userRepository.findAll();
+  }
+
+  public User addMatricula(String email, Matricula matricula) {
+    // Find the user by email
+    User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new UsernameNotFoundException("User Not Found with email: " + email));
+
+    // Assign the matricula to the user
+    user.setMatricula(matricula);
+
+    // Save the updated user in the database
+    User updatedUser = userRepository.save(user);
+
+    // Return the updated user
+    return updatedUser;
   }
 
 }
