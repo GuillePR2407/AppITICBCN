@@ -28,6 +28,39 @@ export const loginUser = async (email: string, password: string): Promise<void> 
     }
 }
 
+export const registerUser = async (email: string, username: string, password: string): Promise<void> => {
+    try {
+        // Hacer el POST para registrar
+        const response = await axios.post(`${API_URL}/auth/signup`, {
+            email,
+            username,
+            password,
+        });
+
+        console.log('Registration successful:', response.data);
+
+    } catch (error) {
+        console.error('Registration Error:', error);
+    }
+};
+
+export const registerUserRole = async (email: string, username: string, password: string, role: string): Promise<void> => {
+    try {
+        // Hacer el POST para registrar
+        const response = await axios.post(`${API_URL}/auth/signup`, {
+            email,
+            username,
+            password,
+            role,
+        });
+
+        console.log('Registration successful:', response.data);
+
+    } catch (error) {
+        console.error('Registration Error:', error);
+    }
+};
+
 export const fetchUserRole = async (email) => {
     try {
         const jwtToken = await AsyncStorage.getItem('jwtToken'); // Obtener el JWT almacenado

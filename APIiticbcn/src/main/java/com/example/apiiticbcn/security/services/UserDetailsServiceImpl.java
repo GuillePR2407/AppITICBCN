@@ -48,4 +48,30 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     return updatedUser;
   }
 
+  public void deleteUser(Long id) {
+    // Find the user by id
+    User user = userRepository.findById(id)
+            .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + id));
+
+    // Delete the user
+    userRepository.delete(user);
+  }
+
+  public User updateUser(User updatedUser) {
+    // Find the user by id
+    User user = userRepository.findById(updatedUser.getId())
+            .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + updatedUser.getId()));
+
+    // Update the user details
+    user.setEmail(updatedUser.getEmail());
+    user.setUsername(updatedUser.getUsername());
+    // Add other fields that you want to update
+
+    // Save the updated user in the database
+    User savedUser = userRepository.save(user);
+
+    // Return the updated user
+    return savedUser;
+  }
+
 }

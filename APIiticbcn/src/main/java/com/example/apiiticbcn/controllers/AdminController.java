@@ -26,12 +26,6 @@ public class AdminController {
   @Autowired
   private MatriculaService matriculaService;
 
-  @GetMapping("/users")
-  @PreAuthorize("hasRole('ADMIN')")
-  public String adminAccess() {
-    return "Admin Board.";
-  }
-
   @GetMapping("/allUsers")
   @PreAuthorize("hasRole('ADMIN')")
   public List<User> getAllUsers() {
@@ -51,6 +45,28 @@ public class AdminController {
     } catch (UsernameNotFoundException e) {
       // Handle error
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+  }
+
+  @DeleteMapping("/deleteUser/{id}")
+  @PreAuthorize("hasRole('ADMIN')")
+  public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+    try {
+      userService.deleteUser(id);
+      return new ResponseEntity<>(HttpStatus.OK);
+    } catch (UsernameNotFoundException e) {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+    }
+  }
+
+  @PutMapping("/updateUser")
+  @PreAuthorize("hasRole('ADMIN')")
+  public ResponseEntity<?> updateUser(@RequestBody User user) {
+    try {
+      User updatedUser = userService.updateUser(user);
+      return new ResponseEntity<>(updatedUser, HttpStatus.OK);
+    } catch (UsernameNotFoundException e) {
+      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
   }
 }

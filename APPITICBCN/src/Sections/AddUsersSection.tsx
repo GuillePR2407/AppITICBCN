@@ -3,6 +3,7 @@ import { ScrollView, View } from 'react-native';
 import { TextInput, Button, useTheme } from 'react-native-paper';
 import { PreferencesContext } from '../index';
 import { KeyboardTypeOptions } from 'react-native';
+import { registerUserRole} from '../services/authService';
 
 const AddUserSection = () => {
     const { theme } = React.useContext(PreferencesContext);
@@ -33,10 +34,18 @@ const AddUserSection = () => {
         setFormData(prevState => ({ ...prevState, [key]: value }));
     };
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         // Implementar lógica de envío de datos
         console.log("Enviando datos del usuario:", formData);
-        // Aquí podrías llamar a un API para guardar los datos o hacer alguna otra acción
+    
+        const { email, nombre, password, rol } = formData;
+    
+        try {
+            await registerUserRole(email, nombre, password, rol);
+            console.log('User registered successfully');
+        } catch (error) {
+            console.error('Registration failed:', error);
+        }
     };
 
     return (
