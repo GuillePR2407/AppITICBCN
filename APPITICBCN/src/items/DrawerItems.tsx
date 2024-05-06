@@ -4,7 +4,7 @@ import { DrawerContentScrollView } from '@react-navigation/drawer';
 import { useNavigation } from '@react-navigation/native';
 import {NativeStackNavigationProp} from '@react-navigation/native-stack';
 import { RootStackParamList } from '../RootStackParamList';
-import { useUser } from '../UserContext';
+import { useUser } from '../context/UserContext';
 import {
   Badge,
   Drawer,

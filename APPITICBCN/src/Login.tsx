@@ -7,7 +7,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from './RootStackParamList';
 import { loginUser, fetchUserRole } from './services/authService';
 import { PreferencesContext } from './index';
-import { useUser } from './UserContext';
+import { useUser } from './context/UserContext';
 
 const Login = () => {
     type NewsNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;

@@ -13,6 +13,18 @@ export const getAllUsers = async (): Promise<any> => {
     }
 }
 
+export const deleteUserByEmail = async (email) => {
+    const jwtToken = await AsyncStorage.getItem('jwtToken');
+    axios.defaults.headers.common = {'Authorization': `Bearer ${jwtToken}`}
+
+    try {
+        const response = await axios.delete(`${API_URL}/deleteUser/${email}`);
+        return response.data;
+    } catch (error) {
+        console.error('Delete user Error:', error);
+    }
+}
+
 export const addMatricula = async (email: string, matricula: any): Promise<any> => {
     try {
         const response = await axios.post(`${API_URL}/addMatricula/${email}`, matricula);
