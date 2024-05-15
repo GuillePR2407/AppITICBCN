@@ -1,5 +1,6 @@
 package com.example.apiiticbcn.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class Matricula {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "grupo_id", nullable = false)
+    @JsonBackReference
     private Grup grupo;
 
     public Matricula() {}

@@ -48,10 +48,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     return updatedUser;
   }
 
-  public void deleteUser(Long id) {
-    // Find the user by id
-    User user = userRepository.findById(id)
-            .orElseThrow(() -> new UsernameNotFoundException("User Not Found with id: " + id));
+  public void deleteUserByEmail(String email) {
+    // Find the user by email
+    User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new UsernameNotFoundException("User Not Found with email: " + email));
 
     // Delete the user
     userRepository.delete(user);

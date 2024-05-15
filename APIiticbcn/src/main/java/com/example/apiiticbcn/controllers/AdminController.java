@@ -5,6 +5,8 @@ import java.util.List;
 import com.example.apiiticbcn.models.Matricula;
 import com.example.apiiticbcn.payload.request.MatriculaUserRequest;
 import com.example.apiiticbcn.repository.UserRepository;
+import com.example.apiiticbcn.models.Grup;
+import com.example.apiiticbcn.security.services.GrupService;
 import com.example.apiiticbcn.security.services.MatriculaService;
 import com.example.apiiticbcn.security.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ public class AdminController {
   @Autowired
   private MatriculaService matriculaService;
 
+  @Autowired
+  private GrupService grupService;
+
   @GetMapping("/allUsers")
   @PreAuthorize("hasRole('ADMIN')")
   public List<User> getAllUsers() {
@@ -36,28 +41,31 @@ public class AdminController {
   @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<?> addMatricula(@PathVariable String email, @RequestBody Matricula matricula) {
     try {
-      // Save the Matricula entity first
-      Matricula savedMatricula = matriculaService.save(matricula);
+      Grup grup = grupService.findById(matricula.getGrupo().getId());
+      grupService.addDefaultAsignaturas(grup);
+      grupService.save(grup); // Save the group after adding the default subjects
 
-      // Then set the saved Matricula entity on the User entity and save the User entity
+      matricula.setGrupo(grup); // Set the group of the matricula
+      Matricula savedMatricula = matriculaService.save(matricula); // Save the matricula after setting the group
+
       User user = userService.addMatricula(email, savedMatricula);
+
       return new ResponseEntity<>(user, HttpStatus.OK);
     } catch (UsernameNotFoundException e) {
-      // Handle error
       return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
   }
 
-  @DeleteMapping("/deleteUser/{id}")
-  @PreAuthorize("hasRole('ADMIN')")
-  public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+@DeleteMapping("/deleteUser/{email}")
+@PreAuthorize("hasRole('ADMIN')")
+public ResponseEntity<?> deleteUser(@PathVariable String email) {
     try {
-      userService.deleteUser(id);
-      return new ResponseEntity<>(HttpStatus.OK);
+        userService.deleteUserByEmail(email);
+        return new ResponseEntity<>(HttpStatus.OK);
     } catch (UsernameNotFoundException e) {
-      return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-  }
+}
 
   @PutMapping("/updateUser")
   @PreAuthorize("hasRole('ADMIN')")

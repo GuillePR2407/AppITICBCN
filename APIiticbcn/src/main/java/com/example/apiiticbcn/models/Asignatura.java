@@ -1,5 +1,6 @@
 package com.example.apiiticbcn.models;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 @Entity
@@ -15,6 +16,7 @@ public class Asignatura {
 
     @ManyToOne
     @JoinColumn(name = "grupo_id")
+    @JsonBackReference
     private Grup grupo;
 
     public Asignatura() {

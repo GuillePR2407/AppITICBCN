@@ -1,8 +1,6 @@
 package com.example.apiiticbcn.controllers;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import jakarta.validation.Valid;
@@ -73,9 +71,10 @@ public class AuthController {
 
     // Detalles del usuario autenticado
     UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-    
+
     // Generación de la cookie con el JWT
-    ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails);
+    Map<String, Object> claims = new HashMap<>();
+    ResponseCookie jwtCookie = jwtUtils.generateJwtCookie(userDetails, claims);
 
     String jwtToken = jwtCookie.getValue();
 
