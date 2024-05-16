@@ -3,10 +3,13 @@ package com.example.apiiticbcn.controllers;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import com.example.apiiticbcn.security.services.UserDetailsServiceImpl;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,13 +17,10 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.apiiticbcn.models.User;
 import com.example.apiiticbcn.models.Role;
@@ -54,6 +54,11 @@ public class AuthController {
 
   @Autowired
   JwtUtils jwtUtils;
+
+  @Autowired
+  UserDetailsService userDetailsService;
+    @Autowired
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
   /*
     {
@@ -150,5 +155,17 @@ public class AuthController {
     ResponseCookie cookie = jwtUtils.getCleanJwtCookie();
     return ResponseEntity.ok().header(HttpHeaders.SET_COOKIE, cookie.toString())
             .body(new MessageResponse("You've been signed out!"));
+  }
+
+  @GetMapping("/user")
+  public ResponseEntity<?> getUserFromToken(@RequestHeader(value="Authorization") String token) {
+    String jwt = token.substring(7); // Remove "Bearer " from the token
+    if (jwtUtils.validateJwtToken(jwt)) {
+      String email = jwtUtils.extractEmail(jwt);
+      UserDetailsImpl userDetails = (UserDetailsImpl) userDetailsServiceImpl.loadUserByEmail(email);
+      return ResponseEntity.ok(userDetails);
+    } else {
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid token");
+    }
   }
 }
