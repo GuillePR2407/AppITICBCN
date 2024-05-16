@@ -33,7 +33,7 @@ export default function Root() {
       ? CardStyleInterpolators.forFadeFromBottomAndroid
       : CardStyleInterpolators.forHorizontalIOS;
 
-  const { userRole } = useUser(); 
+  const { userRole, setUserRole } = useUser(); 
 
   const initialRouteName = userRole === 4 ? 'AddUsersSection' : 'NewsSection'; 
 
@@ -135,6 +135,7 @@ export default function Root() {
           title: 'Usuaris',
         }}
       />
+
     </Stack.Navigator>
   );
 }

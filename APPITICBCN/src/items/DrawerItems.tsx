@@ -19,6 +19,7 @@ import { PreferencesContext } from '../index';
 const isWeb = Platform.OS === 'web';
 
 import userData from "../data/userData.json"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 const GeneralResources = [
@@ -50,7 +51,14 @@ function DrawerItems() {
 
   const _setDrawerItem = (index: number) => setDrawerItemIndex(index);
 
-  const { userRole } = useUser();
+  const { userRole, setUserRole } = useUser();
+
+  const handleLogout = () => {
+    setUserRole(0);
+    AsyncStorage.removeItem('jwtToken');
+    console.log("User logged out");
+    console.log(AsyncStorage.getItem('jwtToken'));
+  };
 
   let currentUserId;
 
@@ -227,6 +235,15 @@ function DrawerItems() {
           </View>
         </TouchableRipple>
       </Drawer.Section>
+      {isUserLoggedIn && (
+        <Drawer.Section style={styles.bottomDrawerSection}>
+          <Drawer.Item
+            icon="exit-to-app"
+            label="Logout"
+            onPress={handleLogout}
+          />
+        </Drawer.Section>
+      )}
     </DrawerContentScrollView>
   );
 }
@@ -256,6 +273,12 @@ const styles = StyleSheet.create({
   annotation: {
     marginHorizontal: 24,
     marginVertical: 6,
+  },
+  bottomDrawerSection: {
+    marginBottom: 15,
+    borderTopColor: '#f4f4f4',
+    borderTopWidth: 1,
+    marginTop: 'auto' // Esto empuja la sección al fondo
   },
 });
 
