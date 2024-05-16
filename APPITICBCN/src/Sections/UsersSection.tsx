@@ -1,27 +1,82 @@
-import * as React from 'react';
+import React, { useState, useEffect } from 'react';
 import { ScrollView, View } from 'react-native';
-import { Text } from 'react-native-paper';
+import { List, Text, IconButton, useTheme } from 'react-native-paper';
+import { getAllUsers, deleteUserByEmail } from '../services/adminService';
 import { PreferencesContext } from '../index';
-import { KeyboardTypeOptions } from 'react-native';
-import { getAllUsers } from '../services//adminService'; // Importa el método getAllUsers
 
 const UsersSection = () => {
-    const [users, setUsers] = React.useState([]); // Crea un estado para los usuarios
+    const [users, setUsers] = useState([]);
+    const [expandedIds, setExpandedIds] = useState(new Set());
+    const { theme } = React.useContext(PreferencesContext);
 
-    React.useEffect(() => {
-        // Cuando el componente se monta, obtén todos los usuarios
-        getAllUsers().then(data => {
-            setUsers(data); // Actualiza el estado con los datos de los usuarios
-        });
-    }, []); // El array vacío significa que este efecto se ejecuta solo una vez, cuando el componente se monta
+    const handlePress = (email) => {
+        const newSet = new Set(expandedIds);
+        if (newSet.has(email)) {
+            newSet.delete(email);
+        } else {
+            newSet.add(email);
+        }
+        setExpandedIds(newSet);
+    };
+
+    const handleDelete = async (email) => {
+        try {
+            await deleteUserByEmail(email);
+            setUsers(users.filter(user => user.email !== email));
+        } catch (error) {
+            console.error('Error deleting user:', error);
+        }
+    };
+
+    useEffect(() => {
+        getAllUsers().then(setUsers).catch(console.error);
+    }, []);
 
     return (
         <ScrollView style={{ padding: 20 }}>
-            {users.map((user, index) => (
-                <View key={index}>
-                    <Text>Username: {user.username}</Text>
-                    <Text>Email: {user.email}</Text>
-                    <Text>Role: {user.role.name}</Text>
+            {users.map((user) => (
+                <View
+                    key={user.email}
+                    style={{
+                        backgroundColor: theme.colors.listItem,
+                        margin: 15,
+                        marginTop: 15,
+                        marginBottom: 0,
+                        borderRadius: 10,
+                        shadowColor: "#000",
+                        shadowOffset: { width: 0, height: 2 },
+                        shadowOpacity: 0.23,
+                        shadowRadius: 2.62,
+                        elevation: 4,
+                    }}
+                >
+                    <List.Accordion
+                        title={user.username}
+                        expanded={expandedIds.has(user.email)}
+                        onPress={() => handlePress(user.email)}
+                        style={{
+                            backgroundColor: theme.colors.listItem,
+                            borderRadius: 10,
+                            borderBottomEndRadius: expandedIds.has(user.email) ? 0 : 10,
+                            borderBottomStartRadius: expandedIds.has(user.email) ? 0 : 10,
+                        }}
+                        right={() => (
+                            user.role.name !== 'ROLE_ADMIN' && (
+                                <IconButton
+                                    icon="delete"
+                                    color={theme.colors.error}
+                                    onPress={() => handleDelete(user.email)}
+                                />
+                            )
+                        )}
+                    >
+                        <Text style={{ padding: 10, color: theme.colors.primary, fontSize: 18 }}>
+                            Email: {user.email}
+                        </Text>
+                        <Text style={{ padding: 10, color: theme.colors.primary, fontSize: 18 }}>
+                            Role: {user.role.name}
+                        </Text>
+                    </List.Accordion>
                 </View>
             ))}
         </ScrollView>

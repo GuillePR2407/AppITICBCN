@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, Text } from 'react-native';
 import { TextInput, Button, Checkbox } from 'react-native-paper';
 import Logo from './components/Logo';
@@ -7,7 +7,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from './RootStackParamList';
 import { loginUser, fetchUserRole } from './services/authService';
 import { PreferencesContext } from './index';
-import { useUser } from './UserContext';
+import { useUser } from './context/UserContext';
 
 const Login = () => {
     type NewsNavigationProp = StackNavigationProp<RootStackParamList, 'Login'>;
@@ -19,7 +19,7 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
-    const { setUserRole } = useUser();
+    const { userRole, setUserRole } = useUser();
 
     const handleLogin = async () => {
         try {
@@ -31,15 +31,20 @@ const Login = () => {
             if (role) {
                 setUserRole(role); // Actualizar el contexto con el nuevo rol
                 console.log('User role set to:', role);
-            }
 
-            navigation.navigate('NewsSection');
+                if (userRole === 4) {
+                    navigation.navigate('AddUsersSection');
+                } else if (userRole !== undefined) {
+                    navigation.navigate('NewsSection');
+                }
+            }            
 
             // Redirigir al usuario o realizar otras acciones
         } catch (error) {
             console.error('Login failed:', error);
         }
     };
+
 
     const navigateToRegister = () => {
         navigation.navigate('Register');

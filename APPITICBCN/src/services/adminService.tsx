@@ -1,7 +1,7 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const API_URL = 'http://localhost:8082/api/admin';
+const API_URL = 'http://10.0.2.2:8082/api/admin';
 
 export const getAllUsers = async (): Promise<any> => {
     try {
@@ -10,6 +10,18 @@ export const getAllUsers = async (): Promise<any> => {
         return response.data;
     } catch (error) {
         console.error('Get all users Error:', error);
+    }
+}
+
+export const deleteUserByEmail = async (email) => {
+    const jwtToken = await AsyncStorage.getItem('jwtToken');
+    axios.defaults.headers.common = {'Authorization': `Bearer ${jwtToken}`}
+
+    try {
+        const response = await axios.delete(`${API_URL}/deleteUser/${email}`);
+        return response.data;
+    } catch (error) {
+        console.error('Delete user Error:', error);
     }
 }
 

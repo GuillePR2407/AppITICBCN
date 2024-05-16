@@ -1,6 +1,6 @@
 import * as React from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { UserProvider } from './UserContext';
+import { UserProvider } from './context/UserContext';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import {
   InitialState,

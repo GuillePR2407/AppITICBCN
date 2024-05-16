@@ -6,7 +6,7 @@ const getProtectedData = async (): Promise<any> => {
     try {
         const token = await AsyncStorage.getItem('userToken'); // Recuperar el token
         if (!token) throw new Error('No token found');
-        const response = await axios.get('http://localhost:8082/api/protected-route', {
+        const response = await axios.get('http://10.0.2.2:8082/api/protected-route', {
         headers: {
             'Authorization': `Bearer ${token}` // Usar el token en la cabecera de autorización
         }

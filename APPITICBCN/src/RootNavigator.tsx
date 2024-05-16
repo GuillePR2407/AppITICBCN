@@ -11,7 +11,7 @@ import { Appbar } from 'react-native-paper';
 import Logo from './components/Logo';
 import LogoPetit from './components/LogoPetit';
 
-import { useUser } from './UserContext';
+import { useUser } from './context/UserContext';
 
 import NewsSection from './Sections/NewsSection';
 import Login from './Login';
@@ -33,53 +33,32 @@ export default function Root() {
       ? CardStyleInterpolators.forFadeFromBottomAndroid
       : CardStyleInterpolators.forHorizontalIOS;
 
-  const { userRole } = useUser();
-  const initialRouteName = userRole === 4 ? 'AddUsersSection' : 'NewsSection';
+  const { userRole, setUserRole } = useUser(); 
+
+  const initialRouteName = userRole === 4 ? 'AddUsersSection' : 'NewsSection'; 
 
   return (
-    <Stack.Navigator initialRouteName={initialRouteName}
+    <Stack.Navigator
+      initialRouteName={initialRouteName}
       screenOptions={({ navigation, route }) => ({
         detachPreviousScreen: !navigation.isFocused(),
         cardStyleInterpolator,
         header: ({ navigation, route, options, back }) => {
           const title = getHeaderTitle(options, route.name);
-          // Comprueba si la pantalla actual es 'Login'
           const excludedScreens = ['Login', 'NoticiaItem', 'InfoItem', 'TramitsItem', 'Register'];
           const isExcludedScreen = excludedScreens.includes(route.name);
-
           return (
-            <Appbar.Header style={{
-              justifyContent: 'space-between', 
-            }}
-            elevated>
+            <Appbar.Header style={{ justifyContent: 'space-between' }} elevated>
               {!isExcludedScreen && (navigation as any).openDrawer ? (
-                // Muestra el botón del menú para todas las pantallas excepto Login
                 <Appbar.Action
                   icon="menu"
                   isLeading
-                  onPress={() =>
-                    (
-                      navigation as any as DrawerNavigationProp<{}>
-                    ).openDrawer()
-                  }
+                  onPress={() => (navigation as any as DrawerNavigationProp<{}>).openDrawer()}
                 />
               ) : back ? (
-                // Muestra el botón de volver solo en la pantalla de Login
                 <Appbar.BackAction onPress={() => navigation.goBack()} />
               ) : null}
-              <Appbar.Content title={title} style={{ 
-                position: 'absolute', // Usa posición absoluta para centrar el título
-                left: 0,
-                right: 0,
-                justifyContent: 'center',
-                alignItems: 'center',
-              }} />
-
-              <Appbar.Content 
-                title={
-                  <LogoPetit />
-                }style={{ position: 'absolute', right: 30}}
-              />
+              <Appbar.Content title={title} style={{ position: 'absolute', left: 0, right: 0, justifyContent: 'center', alignItems: 'center' }} />
             </Appbar.Header>
           );
         },
@@ -156,6 +135,7 @@ export default function Root() {
           title: 'Usuaris',
         }}
       />
+
     </Stack.Navigator>
   );
 }
