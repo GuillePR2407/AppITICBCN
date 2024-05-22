@@ -1,7 +1,7 @@
 import { Background } from '@react-navigation/elements';
 import * as React from 'react';
 import { ScrollView, View, Text } from 'react-native';
-import { List, useTheme } from 'react-native-paper';
+import { List, useTheme, Appbar } from 'react-native-paper';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../RootStackParamList';
@@ -9,10 +9,19 @@ import { PreferencesContext } from '../index';
 
 import qualificacionsData from '../data/qualificacionsData.json';
 
-const QualificacionsSection = () => {
+interface QualificacionsSectionProps {
+    route?: {
+        params?: {
+            source?: string; 
+        };
+    };
+}
+
+const QualificacionsSection: React.FC<QualificacionsSectionProps> = ({ route }) => {
     
     const { theme } = React.useContext(PreferencesContext);
     const [expandedIds, setExpandedIds] = React.useState(new Set());
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
 
     const handlePress = (id) => {
         const newSet = new Set(expandedIds);
@@ -26,6 +35,11 @@ const QualificacionsSection = () => {
 
     return (
         <ScrollView>
+            <Appbar.Header>
+                {route?.params?.source === 'AlumSection' ? ( // Si la fuente es AlumSection, mostrar el botón de retroceso
+                    <Appbar.BackAction onPress={() => navigation.goBack()} />
+                ) : <Appbar.Content title="Els teus moduls" style={{ alignItems: 'center', justifyContent: 'center' }} />}
+            </Appbar.Header>
             {qualificacionsData.map((item) => (
                 <View
                     key={item.id}

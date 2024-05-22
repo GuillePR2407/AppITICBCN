@@ -1,26 +1,14 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { jwtDecode } from 'jwt-decode'; 
+import { jwtDecode }  from 'jwt-decode';
 
-function decodeToken(token) {
-    try {
-        const decoded = jwtDecode(token);
-        return decoded;
-    } catch (error) {
-        console.error("Error decoding token: ", error);
-        return null;
-    }
-}
-
-interface DecodedToken {
-    role: UserRole; // Asegúrate de que el nombre de la propiedad coincida con lo que tu token realmente tiene.
-}
-
-type UserRole = 0 | 1 | 2 | 3 | 4; // 0: Logout, 1: User 2: Alumno, 3: Profesor, 4: Admin
+type UserRole = 0 | 1 | 2 | 3 | 4; // 0: Logout, 1: User, 2: Alumno, 3: Profesor, 4: Admin
 
 interface UserContextType {
     userRole: UserRole;
     setUserRole: (role: UserRole) => void;
+    saveUserToken: (token: string) => void;
+    clearUserToken: () => void;
 }
 
 const UserContext = createContext<UserContextType | undefined>(undefined);
@@ -43,8 +31,31 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     const loadUserRoleFromStorage = async () => {
         const token = await AsyncStorage.getItem('userToken');
         if (token) {
-            const decodedToken: DecodedToken = jwtDecode(token); // Especifica el tipo explícitamente
-            setUserRole(decodedToken.role); // Usa la propiedad correcta según tu token
+            try {
+                const decodedToken: { role: UserRole } = jwtDecode(token);
+                setUserRole(decodedToken.role);
+            } catch (error) {
+                console.error('Error decoding token:', error);
+            }
+        }
+    };
+
+    const saveUserToken = async (token: string) => {
+        try {
+            await AsyncStorage.setItem('userToken', token);
+            const decodedToken: { role: UserRole } = jwtDecode(token);
+            setUserRole(decodedToken.role);
+        } catch (error) {
+            console.error('Failed to save user token to storage', error);
+        }
+    };
+
+    const clearUserToken = async () => {
+        try {
+            await AsyncStorage.removeItem('userToken');
+            setUserRole(0); // Set user role to 0 (logout)
+        } catch (error) {
+            console.error('Failed to clear user token from storage', error);
         }
     };
 
@@ -53,7 +64,7 @@ export const UserProvider: React.FC<UserProviderProps> = ({ children }) => {
     }, []);
 
     return (
-        <UserContext.Provider value={{ userRole, setUserRole }}>
+        <UserContext.Provider value={{ userRole, setUserRole, saveUserToken, clearUserToken }}>
             {children}
         </UserContext.Provider>
     );

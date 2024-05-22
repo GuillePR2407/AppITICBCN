@@ -35,7 +35,7 @@ const AdministratorResources = [
 
 const AcademicResourcesData = [
   { label: 'Qualificacions', icon: 'clipboard-check-outline', key: 3, routeName: 'QualificacionsSection' },
-  { label: 'Mòduls', icon: 'format-list-bulleted', key: 4, routeName: 'ModulsSection' },
+  { label: 'Alumnes', icon: 'format-list-bulleted', key: 4, routeName: 'AlumSection' },
   { label: 'Horari', icon: 'calendar-month-outline', key: 5, routeName: 'HorariSection' },
   { label: 'Bloc de notes', icon: 'note-text-outline', key: 6, routeName: 'NotepadSection' },
   { label: 'Xat', icon: 'message-text-outline', key: 7, routeName: 'ChatSection' },

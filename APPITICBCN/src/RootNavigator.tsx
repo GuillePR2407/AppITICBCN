@@ -24,6 +24,7 @@ import Register from './Register';
 import QualificacionsSection from './Sections/QualificacionsSection';
 import AddUsersSection from './Sections/AddUsersSection';
 import UsersSection from './Sections/UsersSection';
+import AlumSection from './Sections/AlumSection';
 
 const Stack = createStackNavigator();
 
@@ -133,6 +134,13 @@ export default function Root() {
         component={UsersSection}
         options={{
           title: 'Usuaris',
+        }}
+      />
+      <Stack.Screen
+        name="AlumSection"
+        component={AlumSection}
+        options={{
+          title: 'Alumnes',
         }}
       />
 

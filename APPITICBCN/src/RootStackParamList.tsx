@@ -17,11 +17,14 @@ export type RootStackParamList = {
         subtitulo: string;
         texto: string;
     }
-    QualificacionsSection: undefined;
+    QualificacionsSection: {
+        source: string;
+    }
     ModulsSection: undefined;
     HorariSection: undefined;
     NotepadSection: undefined;
     ChatSection: undefined;
     AddUsersSection: undefined;
     UsersSection: undefined;
+    AlumSection: undefined;
 };
