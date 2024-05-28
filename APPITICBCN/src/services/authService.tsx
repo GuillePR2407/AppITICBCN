@@ -12,7 +12,8 @@ export const loginUser = async (email: string, password: string): Promise<void> 
         });
 
         console.log('Login successful:', response.data);
-
+        const nom = response.data.username;
+        console.log('Username:', nom);
         // Supongamos que el servidor envía el JWT en el cuerpo de la respuesta
         const jwtToken = response.data.jwtToken;
         console.log('JWT Token:', jwtToken);
@@ -20,6 +21,7 @@ export const loginUser = async (email: string, password: string): Promise<void> 
         axios.defaults.headers.common = {'Authorization': `Bearer ${jwtToken}`}
 
         // Guardar el JWT en AsyncStorage
+        await AsyncStorage.setItem('Username', nom);
         await AsyncStorage.setItem('jwtToken', jwtToken);
         console.log('JWT Token saved to AsyncStorage');
 

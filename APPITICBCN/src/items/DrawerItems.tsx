@@ -58,6 +58,7 @@ function DrawerItems() {
     AsyncStorage.removeItem('jwtToken');
     console.log("User logged out");
     console.log(AsyncStorage.getItem('jwtToken'));
+    navigation.navigate('NewsSection');
   };
 
   let currentUserId;
@@ -108,8 +109,16 @@ function DrawerItems() {
   }
 
   const UserHeader = () => {
-    const { role, name, course, imageUrl } = currentUser || {};
-
+    const { role, course, imageUrl } = currentUser || {};
+    const [name, setName] = useState('');
+    useEffect(() => {
+      const fetchName = async () => {
+        const username = await AsyncStorage.getItem('Username');
+        setName(username);
+      };
+  
+      fetchName();
+    }, []);
     return (
       <View style={styles2.userHeader}>
         <Image source={{ uri: imageUrl }} style={styles2.userImage} />
